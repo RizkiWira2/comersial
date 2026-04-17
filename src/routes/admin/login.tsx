@@ -18,12 +18,7 @@ function AdminLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Check if already logged in
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate({ to: "/admin" });
-    });
-  }, [navigate]);
+  // State updates only, auth redirects handled by Layout
 
   const handleLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();

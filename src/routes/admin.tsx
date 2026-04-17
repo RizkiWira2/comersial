@@ -17,33 +17,32 @@ function AdminLayout() {
   useEffect(() => {
     let mounted = true;
 
-    const initAuth = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (mounted) {
-          setUser(session?.user ?? null);
-          setLoading(false);
-          
-          if (!session && !window.location.pathname.includes("/admin/login")) {
-            navigate({ to: "/admin/login" });
-          }
-        }
-      } catch (e) {
-        if (mounted) setLoading(false);
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!mounted) return;
+      
+      setUser(session?.user ?? null);
+      setLoading(false);
+
+      const isLoginPath = window.location.pathname.includes("/login");
+      if (!session && !isLoginPath) {
+        navigate({ to: "/admin/login" });
+      } else if (session && isLoginPath) {
+        navigate({ to: "/admin" });
       }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (mounted) {
         setUser(session?.user ?? null);
-        setLoading(false);
-        if (!session && !window.location.pathname.includes("/admin/login")) {
+        const isLoginPath = window.location.pathname.includes("/login");
+        if (!session && !isLoginPath) {
           navigate({ to: "/admin/login" });
         }
       }
     });
 
-    initAuth();
+    checkSession();
 
     return () => {
       mounted = false;
