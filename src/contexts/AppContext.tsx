@@ -162,7 +162,7 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Footer
   "footer.rights": { EN: "All rights reserved.", ID: "Hak cipta dilindungi." },
-  "footer.motto": { EN: "Premium Commercial Real Estate Investment in Bali", ID: "Investasi Real Estate Komersial Premium di Bali" },
+  "footer.motto": { EN: "1-on-1 Commercial Property Investment Services", ID: "Layanan Investasi Properti Komersial 1-on-1" },
   "footer.links": { EN: "Quick Links", ID: "Tautan Cepat" },
   "footer.legal": { EN: "Legal", ID: "Legalitas" },
 };
