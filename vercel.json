@@ -1,15 +1,10 @@
 {
   "version": 2,
-  "builds": [
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": ".output/server/index.mjs"
+      "source": "/(.*)",
+      "destination": "/.output/server/index.mjs"
     }
   ]
 }
