@@ -1,6 +1,6 @@
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate, useLocation } from "@tanstack/react-router";
 import logoFull from "@/assets/logo-full.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { LogOut, LayoutDashboard, Globe } from "lucide-react";
@@ -11,8 +11,10 @@ export const Route = createFileRoute("/admin")({
 
 function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const navLock = useRef(false);
 
   useEffect(() => {
     let mounted = true;
@@ -24,20 +26,24 @@ function AdminLayout() {
       setUser(session?.user ?? null);
       setLoading(false);
 
-      const isLoginPath = window.location.pathname.includes("/login");
-      if (!session && !isLoginPath) {
-        navigate({ to: "/admin/login" });
-      } else if (session && isLoginPath) {
-        navigate({ to: "/admin" });
+      const isLoginPath = location.pathname.includes("/login");
+      
+      if (!session && !isLoginPath && !navLock.current) {
+        navLock.current = true;
+        navigate({ to: "/admin/login" }).finally(() => { navLock.current = false; });
+      } else if (session && isLoginPath && !navLock.current) {
+        navLock.current = true;
+        navigate({ to: "/admin" }).finally(() => { navLock.current = false; });
       }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (mounted) {
         setUser(session?.user ?? null);
-        const isLoginPath = window.location.pathname.includes("/login");
-        if (!session && !isLoginPath) {
-          navigate({ to: "/admin/login" });
+        const isLoginPath = location.pathname.includes("/login");
+        if (!session && !isLoginPath && !navLock.current) {
+          navLock.current = true;
+          navigate({ to: "/admin/login" }).finally(() => { navLock.current = false; });
         }
       }
     });
@@ -48,7 +54,7 @@ function AdminLayout() {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   const isLoginPage = typeof window !== 'undefined' && window.location.pathname.includes("/login");
 
