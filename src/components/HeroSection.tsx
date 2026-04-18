@@ -16,7 +16,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/50 to-foreground/80" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center pt-40 pb-12 sm:pt-48">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center pt-28 pb-12 sm:pt-36">
         <p className="text-gradient-gold text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-4 sm:mb-6">
           {t("hero.tagline")}
         </p>
