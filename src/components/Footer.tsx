@@ -15,7 +15,7 @@ export default function Footer() {
   const { t } = useApp();
   
   const socialLinks = [
-    { icon: <MessageCircle size={18} />, label: "WhatsApp" },
+    { icon: <img src="/src/assets/whatsapp.svg" alt="WhatsApp" className="w-[18px] h-[18px]" />, label: "WhatsApp" },
     { icon: <Instagram size={18} />, label: "Instagram" },
     { icon: <Linkedin size={18} />, label: "LinkedIn" },
     { icon: <Music2 size={18} />, label: "TikTok" },
@@ -36,7 +36,9 @@ export default function Footer() {
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
-                  href="#"
+                  href={social.label === "WhatsApp" ? "https://wa.me/6281234567890" : "#"}
+                  target={social.label === "WhatsApp" ? "_blank" : undefined}
+                  rel={social.label === "WhatsApp" ? "noopener noreferrer" : undefined}
                   className="w-10 h-10 rounded-full border border-background/10 flex items-center justify-center text-background/50 hover:text-gold hover:border-gold transition-all duration-300"
                   aria-label={social.label}
                 >

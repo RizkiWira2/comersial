@@ -285,7 +285,7 @@ function PropertyDetail() {
                     target="_blank"
                     className="w-full flex items-center justify-center gap-3 bg-white/5 border border-border text-foreground font-bold py-4 rounded-2xl hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all uppercase text-xs tracking-widest"
                   >
-                    <MessageCircle size={18} /> WhatsApp Agent
+                    <img src="/src/assets/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" /> WhatsApp Agent
                   </a>
                 </div>
 
