@@ -6,25 +6,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { buttonVariants } from "@/components/ui/button";
 
-/** Simple helper to render bold and italic markdown */
-function renderRichText(text: string) {
-  // Bold: **text**
-  const parts = text.split(/(\*\*.*?\*\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i} className="text-foreground font-bold">{part.slice(2, -2)}</strong>;
-    }
-    // Italic: *text* (simple)
-    const subParts = part.split(/(\*.*?\*)/g);
-    return subParts.map((sub, j) => {
-      if (sub.startsWith('*') && sub.endsWith('*')) {
-        return <em key={j} className="text-gold italic">{sub.slice(1, -1)}</em>;
-      }
-      return sub;
-    });
-  });
-}
-
 export const Route = createFileRoute("/research/$id")({
   head: () => ({
     meta: [{ title: "Research Detail — Comersial" }],
@@ -156,44 +137,10 @@ function ArticleDetail() {
 
             {/* Main Content */}
             <div className="prose prose-invert prose-gold max-w-none">
-              <div className="text-muted-foreground leading-[1.8] text-lg space-y-4 font-sans">
-                {article.content ? (
-                  article.content.split('\n').map((line, idx) => {
-                    const trimmedLine = line.trim();
-                    
-                    // Headers
-                    if (trimmedLine.startsWith('###')) {
-                      return <h3 key={idx} className="text-foreground text-2xl font-black mt-12 mb-6 tracking-tight">{renderRichText(trimmedLine.replace('###', ''))}</h3>;
-                    }
-                    if (trimmedLine.startsWith('##')) {
-                      return <h2 key={idx} className="text-foreground text-3xl font-black mt-14 mb-8 tracking-tight border-b border-gold/20 pb-4">{renderRichText(trimmedLine.replace('##', ''))}</h2>;
-                    }
-                    if (trimmedLine.startsWith('#')) {
-                      return <h1 key={idx} className="text-foreground text-4xl font-black mt-16 mb-10 tracking-tight">{renderRichText(trimmedLine.replace('#', ''))}</h1>;
-                    }
-
-                    // Bullet lists
-                    if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
-                      return (
-                        <div key={idx} className="flex gap-4 ml-4 my-2">
-                          <div className="mt-2.5 h-1.5 w-1.5 rounded-full bg-gold shrink-0" />
-                          <p>{renderRichText(trimmedLine.substring(2))}</p>
-                        </div>
-                      );
-                    }
-
-                    // Empty lines for spacing
-                    if (trimmedLine === '') {
-                        return <div key={idx} className="h-4" />;
-                    }
-
-                    // Regular paragraphs
-                    return <p key={idx} className="mb-4">{renderRichText(line)}</p>;
-                  })
-                ) : (
-                  <p>No content available for this article.</p>
-                )}
-              </div>
+              <div 
+                className="text-muted-foreground leading-[1.8] text-lg font-sans article-rich-content"
+                dangerouslySetInnerHTML={{ __html: article.content || "" }}
+              />
             </div>
 
             {/* Share Footer */}

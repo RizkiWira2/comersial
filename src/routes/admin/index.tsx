@@ -433,34 +433,45 @@ function AdminDashboard() {
                 <Field label="Excerpt" value={articleForm.excerpt!} onChange={(v) => setArticleField("excerpt", v)} required />
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Content (Structured Insight)</label>
+                    <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Content (Rich Text Editor)</label>
                     <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-md border border-border">
                         {[
-                            { icon: 'B', label: 'Bold', action: () => insertMarkdown('**', '**') },
-                            { icon: 'I', label: 'Italic', action: () => insertMarkdown('*', '*') },
-                            { icon: 'H', label: 'Header', action: () => insertMarkdown('### ', '') },
-                            { icon: 'L', label: 'List', action: () => insertMarkdown('- ', '') },
+                            { icon: 'B', label: 'Bold', cmd: 'bold' },
+                            { icon: 'I', label: 'Italic', cmd: 'italic' },
+                            { icon: 'H', label: 'H3', cmd: 'formatBlock', val: 'H3' },
+                            { icon: 'L', label: 'List', cmd: 'insertUnorderedList' },
                         ].map(tool => (
                             <button 
                                 key={tool.label}
                                 type="button"
-                                onClick={tool.action}
+                                onClick={() => {
+                                    document.execCommand(tool.cmd, false, tool.val || "");
+                                    const editor = document.getElementById('article-editor');
+                                    if (editor) setArticleField("content", editor.innerHTML);
+                                }}
                                 className="w-7 h-7 flex items-center justify-center text-[10px] font-black hover:bg-gold hover:text-foreground rounded transition-colors border border-transparent"
-                                title={tool.label}
                             >
                                 {tool.icon}
                             </button>
                         ))}
                     </div>
                   </div>
-                  <textarea
+                  <div
                     id="article-editor"
-                    value={articleForm.content || ""}
-                    onChange={(e) => setArticleField("content", e.target.value)}
-                    rows={12}
-                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold resize-none font-mono"
-                    placeholder="Tips: Use the toolbar buttons above to format your article..."
+                    contentEditable
+                    onInput={(e) => setArticleField("content", e.currentTarget.innerHTML)}
+                    onPaste={(e) => {
+                        // Let the default paste handle it to preserve GDocs formatting
+                        // But we trigger a state save right after
+                        setTimeout(() => {
+                           setArticleField("content", e.currentTarget.innerHTML);
+                        }, 0);
+                    }}
+                    dangerouslySetInnerHTML={{ __html: articleForm.content || "" }}
+                    className="w-full min-h-[400px] rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold overflow-y-auto prose prose-invert prose-gold max-w-none"
+                    style={{ whiteSpace: 'normal' }}
                   />
+                  <p className="text-[10px] text-muted-foreground mt-2 italic px-1">Tip: You can paste content directly from Google Docs / Word with formatting preserved.</p>
                 </div>
                 <Field label="Image URL" value={articleForm.image_url || ""} onChange={(v) => setArticleField("image_url", v)} />
                 <div className="flex justify-end gap-3 mt-4">
