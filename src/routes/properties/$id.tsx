@@ -2,11 +2,15 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { 
-  MapPin, Bed, Bath, Maximize, MessageCircle, FileText, 
+  MapPin, Bed, Bath, Maximize, FileText, 
   ArrowLeft, Calendar, Shield, TrendingUp, DollarSign, 
   ChevronRight, Share2, Heart, Info, Waves, Wifi, Wind, 
   Car, Utensils, TreePine, Eye, Dumbbell, Sofa
 } from "lucide-react";
+import { useApp } from "@/contexts/AppContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import whatsappIcon from "@/assets/whatsapp.svg";
 
 const featureIcons: Record<string, any> = {
   "Swimming Pool": Waves,
@@ -20,9 +24,6 @@ const featureIcons: Record<string, any> = {
   "Ocean View": Eye,
   "Gym / Fitness Center": Dumbbell,
 };
-import { useApp } from "@/contexts/AppContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export const Route = createFileRoute("/properties/$id")({
   head: ({ params }) => ({
@@ -285,7 +286,7 @@ function PropertyDetail() {
                     target="_blank"
                     className="w-full flex items-center justify-center gap-3 bg-white/5 border border-border text-foreground font-bold py-4 rounded-2xl hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all uppercase text-xs tracking-widest"
                   >
-                    <img src="/src/assets/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" /> WhatsApp Agent
+                    <img src={whatsappIcon} alt="WhatsApp" className="w-5 h-5" /> WhatsApp Agent
                   </a>
                 </div>
 

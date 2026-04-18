@@ -275,7 +275,7 @@ function ProjectsIndex() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center rounded-xl border border-border/30 bg-surface/30 px-4 py-3 text-foreground transition-all hover:border-gold hover:bg-gold/5 active:scale-95"
                         >
-                          <img src="/src/assets/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
+                          <img src={whatsappIcon} alt="WhatsApp" className="w-5 h-5" />
                         </a>
                       </div>
                     </div>

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { MapPin, Bed, Bath, Maximize, MessageCircle, FileText } from "lucide-react";
+import { MapPin, Bed, Bath, Maximize, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/AppContext";
+import whatsappIcon from "@/assets/whatsapp.svg";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
@@ -250,7 +251,7 @@ export default function ProjectsSection() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center rounded-xl border border-border/30 bg-surface/30 px-4 py-3 text-foreground transition-all hover:border-gold hover:bg-gold/5 active:scale-95"
                   >
-                    <img src="/src/assets/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
+                    <img src={whatsappIcon} alt="WhatsApp" className="w-5 h-5" />
                   </a>
                 </div>
               </div>
