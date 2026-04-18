@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/AppContext";
 import { 
   Building2, MapPin, TrendingUp, DollarSign, 
-  ChevronRight, Filter, Search, Grid, List as ListIcon 
+  ChevronRight, Filter, Search, Grid, List as ListIcon,
+  Bed, Bath, Maximize, FileText, MessageCircle
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
