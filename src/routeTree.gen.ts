@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ResearchIndexRouteImport } from './routes/research/index'
+import { Route as ResearchIdRouteImport } from './routes/research/$id'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PropertiesIdRouteImport } from './routes/properties/$id'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
@@ -23,6 +25,16 @@ const AdminRoute = AdminRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchIndexRoute = ResearchIndexRouteImport.update({
+  id: '/research/',
+  path: '/research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchIdRoute = ResearchIdRouteImport.update({
+  id: '/research/$id',
+  path: '/research/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -45,12 +57,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/research': typeof ResearchIndexRoute
+  '/research/$id': typeof ResearchIdRoute
   '/properties/$id': typeof PropertiesIdRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
+  '/research': typeof ResearchIndexRoute
+  '/research/$id': typeof ResearchIdRoute
   '/properties/$id': typeof PropertiesIdRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -59,19 +75,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/research/': typeof ResearchIndexRoute
+  '/research/$id': typeof ResearchIdRoute
   '/properties/$id': typeof PropertiesIdRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/login' | '/properties/$id' | '/admin/'
+  fullPaths: '/' | '/admin' | '/admin/login' | '/research' | '/research/$id' | '/properties/$id' | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/login' | '/properties/$id' | '/admin'
+  to: '/' | '/admin/login' | '/research' | '/research/$id' | '/properties/$id' | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/admin/login'
+    | '/research/'
+    | '/research/$id'
     | '/properties/$id'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -79,6 +99,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  ResearchIndexRoute: typeof ResearchIndexRoute
+  ResearchIdRoute: typeof ResearchIdRoute
   PropertiesIdRoute: typeof PropertiesIdRoute
 }
 
@@ -96,6 +118,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/': {
+      id: '/research/'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/$id': {
+      id: '/research/$id'
+      path: '/research/$id'
+      fullPath: '/research/$id'
+      preLoaderRoute: typeof ResearchIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -137,6 +173,8 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  ResearchIndexRoute: ResearchIndexRoute,
+  ResearchIdRoute: ResearchIdRoute,
   PropertiesIdRoute: PropertiesIdRoute,
 }
 export const routeTree = rootRouteImport
@@ -144,10 +182,8 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
+declare module '@tanstack/react-router' {
   interface Register {
-    ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
   }
 }
