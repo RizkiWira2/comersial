@@ -111,6 +111,25 @@ function AdminDashboard() {
     setLoading(false);
   };
 
+  const insertMarkdown = (prefix: string, suffix: string) => {
+    const textarea = document.getElementById('article-editor') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = articleForm.content || "";
+    const selectedText = text.substring(start, end);
+    const newText = text.substring(0, start) + prefix + selectedText + suffix + text.substring(end);
+
+    setArticleField("content", newText);
+    
+    // Focus back and set selection after state update
+    setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + prefix.length, end + prefix.length);
+    }, 10);
+  };
+
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -413,19 +432,40 @@ function AdminDashboard() {
                 <Field label="Title" value={articleForm.title!} onChange={(v) => setArticleField("title", v)} required />
                 <Field label="Excerpt" value={articleForm.excerpt!} onChange={(v) => setArticleField("excerpt", v)} required />
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Content (Text/Markdown)</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Content (Structured Insight)</label>
+                    <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-md border border-border">
+                        {[
+                            { icon: 'B', label: 'Bold', action: () => insertMarkdown('**', '**') },
+                            { icon: 'I', label: 'Italic', action: () => insertMarkdown('*', '*') },
+                            { icon: 'H', label: 'Header', action: () => insertMarkdown('### ', '') },
+                            { icon: 'L', label: 'List', action: () => insertMarkdown('- ', '') },
+                        ].map(tool => (
+                            <button 
+                                key={tool.label}
+                                type="button"
+                                onClick={tool.action}
+                                className="w-7 h-7 flex items-center justify-center text-[10px] font-black hover:bg-gold hover:text-foreground rounded transition-colors border border-transparent"
+                                title={tool.label}
+                            >
+                                {tool.icon}
+                            </button>
+                        ))}
+                    </div>
+                  </div>
                   <textarea
+                    id="article-editor"
                     value={articleForm.content || ""}
                     onChange={(e) => setArticleField("content", e.target.value)}
-                    rows={8}
-                    className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-gold resize-none"
-                    placeholder="Tulis isi artikel di sini..."
+                    rows={12}
+                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold resize-none font-mono"
+                    placeholder="Tips: Use the toolbar buttons above to format your article..."
                   />
                 </div>
                 <Field label="Image URL" value={articleForm.image_url || ""} onChange={(v) => setArticleField("image_url", v)} />
                 <div className="flex justify-end gap-3 mt-4">
                   <button type="button" onClick={closeForm} className="px-6 py-2.5 rounded-md border border-border text-sm font-bold">Cancel</button>
-                  <button type="submit" className="px-8 py-2.5 rounded-md bg-gold text-foreground text-sm font-bold">
+                  <button type="submit" className="px-8 py-2.5 rounded-md bg-gold text-foreground text-sm font-bold shadow-lg shadow-gold/10">
                     {editingId ? "Update Article" : "Create Article"}
                   </button>
                 </div>
