@@ -31,8 +31,6 @@ const emptyProperty: PropertyInsert = {
   exit_pct: "",
   roi: "",
   capital_growth: "",
-  beds: 0,
-  baths: 0,
   area: "",
   land_size: "",
   building_size: "",
@@ -390,10 +388,6 @@ function AdminDashboard() {
                 <Field label="Exit Projection (5Y)" value={propForm.exit_projection || ""} onChange={(v) => setPropField("exit_projection", v)} />
                 <Field label="Exit Profit (%)" value={propForm.exit_pct || ""} onChange={(v) => setPropField("exit_pct", v)} />
                 <Field label="Capital Growth (%)" value={propForm.capital_growth || ""} onChange={(v) => setPropField("capital_growth", v)} />
-                <div className="grid grid-cols-2 gap-2">
-                  <Field label="Beds" value={String(propForm.beds ?? 0)} onChange={(v) => setPropField("beds", Number(v))} type="number" />
-                  <Field label="Baths" value={String(propForm.baths ?? 0)} onChange={(v) => setPropField("baths", Number(v))} type="number" />
-                </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Field label="Total Rooms" value={String(propForm.total_rooms ?? 0)} onChange={(v) => setPropField("total_rooms", Number(v))} type="number" />
                   <div>

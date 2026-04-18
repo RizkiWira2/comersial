@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { MapPin, Bed, Bath, Maximize, FileText } from "lucide-react";
+import { MapPin, Maximize, FileText, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/AppContext";
 import whatsappIcon from "@/assets/whatsapp.svg";
@@ -93,9 +93,9 @@ interface ProjectItem {
   exit_pct: string | null;
   roi: string | null;
   capital_growth: string | null;
-  beds: number | null;
-  baths: number | null;
   area: string | null;
+  land_size: string | null;
+  building_size: string | null;
 }
 
 export default function ProjectsSection() {
@@ -239,9 +239,8 @@ export default function ProjectsSection() {
 
                 {/* Specs */}
                 <div className="flex items-center gap-4 text-muted-foreground text-[10px] mb-5 pt-4 border-t border-border/10">
-                  <span className="flex items-center gap-1.5 font-bold"><Bed size={13} className="text-gold" /> {p.beds || 3}</span>
-                  <span className="flex items-center gap-1.5 font-bold"><Bath size={13} className="text-gold" /> {p.baths || 3}</span>
-                  <span className="flex items-center gap-1.5 font-bold"><Maximize size={13} className="text-gold" /> {p.area || "350 m²"}</span>
+                  <span className="flex items-center gap-1.5 font-bold"><Maximize size={13} className="text-gold" /> L: {p.land_size || p.area || "-"}</span>
+                  <span className="flex items-center gap-1.5 font-bold"><Building2 size={13} className="text-gold" /> B: {p.building_size || "-"}</span>
                 </div>
 
                 {/* Action Buttons */}

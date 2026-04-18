@@ -5,7 +5,7 @@ import { useApp } from "@/contexts/AppContext";
 import { 
   Building2, MapPin, TrendingUp, DollarSign, 
   ChevronRight, Filter, Search, Grid, List as ListIcon,
-  Bed, Bath, Maximize, FileText
+  Maximize, FileText
 } from "lucide-react";
 import whatsappIcon from "@/assets/whatsapp.svg";
 import Navbar from "@/components/Navbar";
@@ -31,9 +31,9 @@ interface Property {
   exit_projection: string | null;
   roi: string | null;
   capital_growth: string | null;
-  beds: number | null;
-  baths: number | null;
   area: string | null;
+  land_size: string | null;
+  building_size: string | null;
   pdf_url: string | null;
   image_url: string | null;
   is_published: boolean;
@@ -264,9 +264,8 @@ function ProjectsIndex() {
 
                       {/* Specs */}
                       <div className="flex items-center gap-4 text-muted-foreground text-[10px] mb-5 pt-4 border-t border-border/10">
-                        <span className="flex items-center gap-1.5 font-bold"><Bed size={13} className="text-gold" /> {item.beds || 3}</span>
-                        <span className="flex items-center gap-1.5 font-bold"><Bath size={13} className="text-gold" /> {item.baths || 3}</span>
-                        <span className="flex items-center gap-1.5 font-bold"><Maximize size={13} className="text-gold" /> {item.area || "350 m²"}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><Maximize size={13} className="text-gold" /> L: {item.land_size || item.area || "-"}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><Building2 size={13} className="text-gold" /> B: {item.building_size || "-"}</span>
                       </div>
 
                       {/* Action Buttons */}
