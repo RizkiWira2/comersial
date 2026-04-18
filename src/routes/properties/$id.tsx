@@ -266,44 +266,58 @@ function PropertyDetail() {
               </div>
             </div>
 
-            {/* Investment Details Table */}
+            {/* Financial Projections Section */}
             <div className="space-y-6">
-              <h4 className="text-sm font-bold text-foreground uppercase tracking-widest border-l-2 border-gold pl-4">Financial Projections</h4>
-              <div className="overflow-hidden rounded-3xl border border-border bg-card">
-                <table className="w-full text-left text-xs sm:text-sm border-collapse">
-                  <tbody>
-                    <tr className="border-b border-border bg-muted/30">
-                      <td className="p-5 font-medium text-muted-foreground">{t("proj.price")}</td>
-                      <td className="p-5 font-bold text-foreground text-right">{convertPrice(property.price)}</td>
-                    </tr>
-                    {property.market_value && (
-                      <tr className="border-b border-border">
-                        <td className="p-5 font-medium text-muted-foreground">{t("proj.market")}</td>
-                        <td className="p-5 font-bold text-foreground text-right">
-                          {convertPrice(property.market_value)} <span className="text-gold-dark ml-2">({property.profit_pct})</span>
-                        </td>
-                      </tr>
-                    )}
-                    {property.exit_projection && (
-                      <tr className="border-b border-border bg-gold/5">
-                        <td className="p-5 font-medium text-gold-dark font-bold">{t("proj.exit")}</td>
-                        <td className="p-5 font-bold text-gold-dark text-right">
-                          {convertPrice(property.exit_projection)} <span className="ml-2">({property.exit_pct})</span>
-                        </td>
-                      </tr>
-                    )}
-                    <tr className="border-b border-border">
-                      <td className="p-5 font-medium text-muted-foreground">{t("proj.roi")}</td>
-                      <td className="p-5 font-bold text-foreground text-right">{property.roi || "12%"} Yearly</td>
-                    </tr>
-                    <tr>
-                      <td className="p-5 font-medium text-muted-foreground">{t("proj.growth")}</td>
-                      <td className="p-5 font-bold text-foreground text-right">{property.capital_growth || "8%"} Yearly</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-6 bg-gold rounded-full" />
+                <h2 className="text-xl font-black text-foreground uppercase tracking-widest">{t("proj.financial")}</h2>
+              </div>
+              
+              <div className="bg-card border border-border rounded-[32px] overflow-hidden shadow-xl">
+                <div className="divide-y divide-border">
+                  <MetricRow label={t("proj.price")} value={convertPrice(property.price)} />
+                  {property.market_value && (
+                    <MetricRow 
+                      label={t("proj.market")} 
+                      value={convertPrice(property.market_value)} 
+                      subValue={`(${property.profit_pct || "100%"})`} 
+                    />
+                  )}
+                  {property.exit_projection && (
+                    <MetricRow 
+                      label="Exit Projection (5Y)" 
+                      value={convertPrice(property.exit_projection)} 
+                      subValue={`(${property.exit_pct})`}
+                      highlight
+                    />
+                  )}
+                  <MetricRow label={t("proj.roi")} value={`${property.roi || "12.5%"} Yearly`} />
+                  <MetricRow label={t("proj.growth")} value={`${property.capital_growth || "8.5%"} Yearly`} />
+                </div>
               </div>
             </div>
+
+            {/* Other Details Section */}
+            {property.other_details && property.other_details.length > 0 && (
+              <div className="space-y-6 pt-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-1 h-6 bg-gold rounded-full" />
+                  <h2 className="text-xl font-black text-foreground uppercase tracking-widest">Other Details</h2>
+                </div>
+                
+                <div className="bg-card border border-border rounded-[32px] overflow-hidden shadow-xl">
+                  <div className="divide-y divide-border">
+                    {property.other_details.map((detail: any, idx: number) => (
+                      <MetricRow 
+                        key={idx} 
+                        label={detail.label} 
+                        value={detail.value} 
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Sidebar (Right) */}
@@ -365,6 +379,22 @@ function PropertyDetail() {
       </main>
 
       <Footer />
+    </div>
+  );
+}
+
+export default PropertyDetail;
+
+function MetricRow({ label, value, subValue, highlight }: { label: string; value: string; subValue?: string; highlight?: boolean }) {
+  return (
+    <div className={`flex justify-between items-center p-6 group transition-colors ${highlight ? 'bg-gold/5' : 'hover:bg-muted/30'}`}>
+      <span className={`text-sm font-bold uppercase tracking-widest ${highlight ? 'text-gold' : 'text-muted-foreground'}`}>{label}</span>
+      <div className="text-right">
+        <span className={`text-lg font-black ${highlight ? 'text-gold' : 'text-foreground'}`}>{value}</span>
+        {subValue && (
+          <span className={`text-xs ml-2 font-bold ${highlight ? 'text-gold-dark' : 'text-gold'}`}>{subValue}</span>
+        )}
+      </div>
     </div>
   );
 }

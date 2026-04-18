@@ -39,6 +39,7 @@ const emptyProperty: PropertyInsert = {
   image_url: "",
   images: [],
   pdf_url: "",
+  other_details: [],
   is_published: true,
 };
 
@@ -437,6 +438,64 @@ function AdminDashboard() {
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-gold/5 border border-gold/20">
                     <ImageIcon size={14} className="text-gold" />
                     <p className="text-[10px] text-muted-foreground italic">Tip: The first image uploaded will automatically become your main cover image.</p>
+                  </div>
+                </div>
+
+                {/* Other Details Dynamic Section */}
+                <div className="sm:col-span-2 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Other Details (Keterangan & Nilai)</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = (propForm.other_details as any[]) || [];
+                        setPropField("other_details", [...current, { label: "", value: "" }]);
+                      }}
+                      className="text-[10px] font-bold text-gold hover:text-gold-dark uppercase tracking-widest flex items-center gap-1"
+                    >
+                      <Plus size={12} /> Add Detail
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    {((propForm.other_details as any[]) || []).map((detail, idx) => (
+                      <div key={idx} className="flex gap-2 group">
+                        <input
+                          placeholder="Keterangan (e.g. Legalitas)"
+                          value={detail.label}
+                          onChange={(e) => {
+                            const next = [...(propForm.other_details as any[])];
+                            next[idx].label = e.target.value;
+                            setPropField("other_details", next);
+                          }}
+                          className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-gold"
+                        />
+                        <input
+                          placeholder="Nilai (e.g. SHM / Hak Milik)"
+                          value={detail.value}
+                          onChange={(e) => {
+                            const next = [...(propForm.other_details as any[])];
+                            next[idx].value = e.target.value;
+                            setPropField("other_details", next);
+                          }}
+                          className="flex-[1.5] rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-gold"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const next = [...(propForm.other_details as any[])];
+                            next.splice(idx, 1);
+                            setPropField("other_details", next);
+                          }}
+                          className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    ))}
+                    {((propForm.other_details as any[]) || []).length === 0 && (
+                      <p className="text-[10px] text-muted-foreground italic text-center py-4 rounded-xl border border-dashed border-border">No other details added yet. Click "Add Detail" to begin.</p>
+                    )}
                   </div>
                 </div>
 
