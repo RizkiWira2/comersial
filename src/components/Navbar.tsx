@@ -28,9 +28,9 @@ export default function Navbar() {
   }, []);
 
   const links = [
-    { label: t("nav.services"), href: "#what-you-get" },
-    { label: t("nav.research"), href: "#research" },
-    { label: t("nav.about"), href: "#why-us" },
+    { label: t("nav.services"), href: "/#what-you-get", isExternal: false },
+    { label: t("nav.research"), href: "/research", isExternal: true },
+    { label: t("nav.about"), href: "/#why-us", isExternal: false },
   ];
 
   return (
@@ -42,15 +42,25 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) => 
+              l.isExternal ? (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-gold transition-colors"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-gold transition-colors"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
 
             {/* Language Toggle */}
             <div className="flex items-center rounded-full border border-border overflow-hidden">
@@ -118,16 +128,27 @@ export default function Navbar() {
 
       {open && (
         <div className="md:hidden border-t border-border bg-background px-4 pb-4">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="block py-3 text-sm font-medium text-muted-foreground"
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) => 
+            l.isExternal ? (
+              <Link
+                key={l.href}
+                to={l.href}
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm font-medium text-muted-foreground hover:text-gold"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm font-medium text-muted-foreground hover:text-gold"
+              >
+                {l.label}
+              </a>
+            )
+          )}
 
           {/* Mobile Language & Currency */}
           <div className="flex items-center gap-3 py-3">
