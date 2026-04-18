@@ -270,7 +270,7 @@ function ProjectsIndex() {
                           <FileText size={12} /> {t("proj.research")}
                         </Link>
                         <a
-                          href="https://wa.me/6281234567890"
+                          href={`https://wa.me/6285362254459?text=I'm interested in ${item.title}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center rounded-xl border border-border/30 bg-surface/30 px-4 py-3 text-foreground transition-all hover:border-gold hover:bg-gold/5 active:scale-95"

@@ -282,7 +282,7 @@ function PropertyDetail() {
                   </button>
                   
                   <a 
-                    href={`https://wa.me/6281234567890?text=I'm interested in ${property.title}`}
+                    href={`https://wa.me/6285362254459?text=I'm interested in ${property.title}`}
                     target="_blank"
                     className="w-full flex items-center justify-center gap-3 bg-white/5 border border-border text-foreground font-bold py-4 rounded-2xl hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all uppercase text-xs tracking-widest"
                   >
