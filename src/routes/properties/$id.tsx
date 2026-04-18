@@ -1,12 +1,15 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   MapPin, Bed, Bath, Maximize, FileText, 
   ArrowLeft, Calendar, Shield, TrendingUp, DollarSign, 
   ChevronRight, Share2, Heart, Info, Waves, Wifi, Wind, 
-  Car, Utensils, TreePine, Eye, Dumbbell, Sofa
+  Car, Utensils, TreePine, Eye, Dumbbell, Sofa,
+  ChevronLeft
 } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useApp } from "@/contexts/AppContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -37,6 +40,24 @@ function PropertyDetail() {
   const [property, setProperty] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const { convertPrice, t } = useApp();
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -102,41 +123,69 @@ function PropertyDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Content (Left) */}
           <div className="lg:col-span-2 space-y-10">
-            {/* Image Gallery */}
-            <div className="grid grid-cols-4 grid-rows-2 gap-3 h-[400px] sm:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-              {property.images && property.images.length > 0 ? (
+            {/* Image Carousel */}
+            <div className="relative group">
+              <div className="overflow-hidden rounded-[40px] shadow-2xl bg-card border border-border/40" ref={emblaRef}>
+                <div className="flex">
+                  {property.images && property.images.length > 0 ? (
+                    property.images.map((img: string, index: number) => (
+                      <div key={index} className="flex-[0_0_100%] min-w-0 relative aspect-[16/10] sm:aspect-[16/9]">
+                        <img 
+                          src={img} 
+                          alt={`${property.title} - ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex-[0_0_100%] min-w-0 relative aspect-[16/10] sm:aspect-[16/9]">
+                      <img 
+                        src={property.image_url || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200"} 
+                        alt={property.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Navigation Arrows */}
+              {property.images && property.images.length > 1 && (
                 <>
-                  <div className="col-span-4 sm:col-span-3 row-span-2 relative group cursor-pointer overflow-hidden">
-                    <img 
-                      src={property.images[0]} 
-                      alt={property.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  {property.images[1] && (
-                    <div className="hidden sm:block overflow-hidden cursor-pointer relative group">
-                      <img src={property.images[1]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/20" />
-                    </div>
-                  )}
-                  {property.images[2] && (
-                    <div className="hidden sm:block overflow-hidden cursor-pointer relative group">
-                      <img src={property.images[2]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/20" />
-                    </div>
-                  )}
-                  {!property.images[1] && (
-                     <div className="hidden sm:flex items-center justify-center bg-muted/50 border border-border/50 text-muted-foreground text-[10px] font-bold uppercase tracking-widest text-center px-4">More photos coming soon</div>
-                  )}
+                  <button 
+                    onClick={scrollPrev}
+                    className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/80 backdrop-blur-md border border-border/50 flex items-center justify-center text-foreground hover:bg-gold hover:text-background transition-all opacity-0 group-hover:opacity-100 shadow-xl z-20"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={scrollNext}
+                    className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/80 backdrop-blur-md border border-border/50 flex items-center justify-center text-foreground hover:bg-gold hover:text-background transition-all opacity-0 group-hover:opacity-100 shadow-xl z-20"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
                 </>
-              ) : (
-                <div className="col-span-4 row-span-2 relative group cursor-pointer overflow-hidden">
-                  <img 
-                    src={property.image_url || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200"} 
-                    alt={property.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+              )}
+
+              {/* Index Indicator */}
+              {property.images && property.images.length > 1 && (
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                  {property.images.map((_: any, i: number) => (
+                    <button
+                      key={i}
+                      onClick={() => emblaApi?.scrollTo(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        selectedIndex === i ? "w-8 bg-gold" : "w-2 bg-white/40 hover:bg-white/60"
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+              
+              {/* Image Count Badge */}
+              {property.images && property.images.length > 0 && (
+                <div className="absolute top-6 right-6 z-20 bg-background/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-border/50 text-[10px] font-black text-foreground uppercase tracking-widest shadow-xl">
+                  {selectedIndex + 1} / {property.images.length}
                 </div>
               )}
             </div>
