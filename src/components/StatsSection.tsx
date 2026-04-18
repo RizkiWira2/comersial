@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
 import bank1 from "@/assets/banks/Artboard 1.png";
 import { useApp } from "@/contexts/AppContext";
 import bank2 from "@/assets/banks/Artboard 2.png";
@@ -14,28 +14,21 @@ function Counter({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const numericValue = parseInt(value.replace(/[^0-9]/g, ""));
   const suffix = value.replace(/[0-9]/g, "");
-  
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, {
-    damping: 30,
-    stiffness: 100,
-  });
-  
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    if (isInView) {
-      motionValue.set(numericValue);
+    if (isInView && ref.current) {
+      const node = ref.current;
+      const controls = animate(0, numericValue, {
+        duration: 1.5,
+        ease: "easeOut",
+        onUpdate(value) {
+          node.textContent = Math.floor(value).toString();
+        },
+      });
+      return () => controls.stop();
     }
-  }, [isInView, motionValue, numericValue]);
-
-  useEffect(() => {
-    springValue.on("change", (latest) => {
-      if (ref.current) {
-        ref.current.textContent = Math.floor(latest).toString();
-      }
-    });
-  }, [springValue]);
+  }, [isInView, numericValue]);
 
   return (
     <span>
