@@ -22,8 +22,16 @@ interface Property {
   location: string;
   price: string;
   category: string;
+  tenure: string | null;
+  exit_pct: string | null;
+  market_value: string | null;
+  profit_pct: string | null;
+  exit_projection: string | null;
   roi: string | null;
   capital_growth: string | null;
+  beds: number | null;
+  baths: number | null;
+  area: string | null;
   image_url: string | null;
   is_published: boolean;
 }
@@ -53,7 +61,7 @@ function ProjectsIndex() {
     async function fetchProperties() {
       const { data, error } = await supabase
         .from("properties")
-        .select("id, title, location, price, category, roi, capital_growth, image_url, is_published")
+        .select("*")
         .eq("is_published", true)
         .order("created_at", { ascending: false });
 
@@ -163,16 +171,19 @@ function ProjectsIndex() {
             ) : filtered.length > 0 ? (
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {filtered.map((item) => (
-                  <Link
+                  <div
                     key={item.id}
-                    to="/properties/$id"
-                    params={{ id: item.id }}
-                    className="group relative flex flex-col h-full glass-card rounded-[32px] border border-border/40 hover:border-gold/40 bg-card/40 transition-all duration-500 hover:-translate-y-3 overflow-hidden"
+                    className="group relative flex flex-col h-full glass-card rounded-[32px] border border-border/40 hover:border-gold/40 bg-card/40 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-2xl"
                   >
                     {/* Image Area */}
-                    <div className="aspect-[4/3] overflow-hidden relative">
-                      <div className="absolute top-6 left-6 z-20">
-                        <span className="bg-surface/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50 text-[10px] font-bold text-gold uppercase tracking-widest shadow-xl">
+                    <div className="aspect-[16/10] overflow-hidden relative">
+                      <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
+                        {item.exit_pct && (
+                           <div className="bg-foreground/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-gold/30 text-[10px] font-black text-gold uppercase tracking-tighter">
+                              {item.exit_pct} PROFIT EST.
+                           </div>
+                        )}
+                        <span className="bg-surface/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-border/50 text-[10px] font-bold text-foreground uppercase tracking-widest w-fit">
                           {item.category}
                         </span>
                       </div>
@@ -181,20 +192,14 @@ function ProjectsIndex() {
                         <img
                           src={item.image_url}
                           alt={item.title}
-                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
                       ) : (
                         <div className="w-full h-full bg-muted flex items-center justify-center">
                           <Building2 size={40} className="text-gold/20" />
                         </div>
                       ) }
-                      <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
-                      
-                      <div className="absolute bottom-0 inset-x-0 p-6 flex items-end justify-between translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                         <div className="bg-gold text-foreground px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter">
-                            Check Due Diligence
-                         </div>
-                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-transparent" />
                     </div>
 
                     {/* Content Area */}
@@ -204,27 +209,71 @@ function ProjectsIndex() {
                         {item.location}
                       </div>
 
-                      <h3 className="text-xl font-bold text-foreground mb-6 leading-tight group-hover:text-gold transition-colors duration-300 line-clamp-2">
+                      <h3 className="text-2xl font-black text-foreground mb-2 leading-tight tracking-tight">
                         {item.title}
                       </h3>
+
+                      <div className="mb-6">
+                        <span className="inline-block rounded-full bg-gold/10 px-3 py-1 text-[10px] font-bold text-gold uppercase tracking-widest border border-gold/20">
+                          {item.tenure || "Freehold"}
+                        </span>
+                      </div>
                       
-                      {/* Investment Metrics */}
-                      <div className="grid grid-cols-2 gap-4 pt-6 border-t border-border/30 mt-auto">
-                        <div className="space-y-1">
-                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
-                             <DollarSign size={10} className="text-gold" /> Price
-                          </p>
-                          <p className="text-sm font-black text-foreground">{item.price}</p>
+                      {/* Detailed Investment Metrics */}
+                      <div className="space-y-3 mb-8 text-sm">
+                        <div className="flex justify-between items-center py-1 border-b border-border/10">
+                          <span className="text-muted-foreground">{t("proj.price")}</span>
+                          <span className="font-bold text-foreground">{convertPrice(item.price)}</span>
                         </div>
-                        <div className="space-y-1 text-right">
-                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 justify-end">
-                             <TrendingUp size={10} className="text-gold" /> ROI Est.
-                          </p>
-                          <p className="text-sm font-black text-gold">{item.roi || "12.5%"}</p>
+                        {item.market_value && (
+                          <div className="flex justify-between items-center py-1 border-b border-border/10">
+                            <span className="text-muted-foreground">{t("proj.market")}</span>
+                            <span className="font-bold text-foreground">
+                              {convertPrice(item.market_value)} <span className="text-gold text-xs ml-1">({item.profit_pct || "100%"})</span>
+                            </span>
+                          </div>
+                        )}
+                        {item.exit_projection && (
+                          <div className="flex justify-between items-center py-1 border-b border-border/10">
+                            <span className="text-muted-foreground">{t("proj.exit")}</span>
+                            <span className="font-bold text-gold">
+                              {convertPrice(item.exit_projection)} <span className="text-xs ml-1 opacity-70">({item.exit_pct})</span>
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">{t("proj.roi")}</span>
+                          <span className="font-bold text-foreground">{item.roi || "12.5%"} Yearly</span>
                         </div>
                       </div>
+
+                      {/* Specs */}
+                      <div className="flex items-center gap-6 text-muted-foreground text-xs mb-8 pt-6 border-t border-border/30">
+                        <span className="flex items-center gap-2 font-bold"><Bed size={15} className="text-gold" /> {item.beds || 3}</span>
+                        <span className="flex items-center gap-2 font-bold"><Bath size={15} className="text-gold" /> {item.baths || 3}</span>
+                        <span className="flex items-center gap-2 font-bold"><Maximize size={15} className="text-gold" /> {item.area || "350 m²"}</span>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-3 mt-auto pt-2">
+                        <Link
+                          to="/properties/$id"
+                          params={{ id: item.id }}
+                          className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-foreground px-4 py-3.5 text-xs font-black text-background transition-all hover:bg-gold hover:text-foreground shadow-lg active:scale-95"
+                        >
+                          <FileText size={14} /> {t("proj.research")}
+                        </Link>
+                        <a
+                          href="https://wa.me/6281234567890"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center rounded-2xl border border-border/50 bg-surface/50 px-4 py-3.5 text-foreground transition-all hover:border-gold hover:bg-gold/5 active:scale-95"
+                        >
+                          <MessageCircle size={18} />
+                        </a>
+                      </div>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             ) : (
