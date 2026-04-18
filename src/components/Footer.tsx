@@ -5,20 +5,20 @@ import {
   Linkedin, 
   Youtube, 
   Facebook, 
-  Music2, // Used as TikTok placeholder
   MapPin,
   Mail
 } from "lucide-react";
+import tiktokIcon from "@/assets/tik-tok.svg";
 import whatsappIcon from "@/assets/whatsapp.svg";
 
 export default function Footer() {
   const { t } = useApp();
   
   const socialLinks = [
-    { icon: <img src={whatsappIcon} alt="WhatsApp" className="w-[18px] h-[18px] brightness-0 invert" />, label: "WhatsApp" },
+    { icon: <img src={whatsappIcon} alt="WhatsApp" className="w-[18px] h-[18px] brightness-0 invert opacity-50" />, label: "WhatsApp" },
     { icon: <Instagram size={18} />, label: "Instagram" },
     { icon: <Linkedin size={18} />, label: "LinkedIn" },
-    { icon: <Music2 size={18} />, label: "TikTok" },
+    { icon: <img src={tiktokIcon} alt="TikTok" className="w-[18px] h-[18px] brightness-0 invert opacity-50" />, label: "TikTok" },
     { icon: <Facebook size={18} />, label: "Facebook" },
     { icon: <Youtube size={18} />, label: "Youtube" },
   ];
