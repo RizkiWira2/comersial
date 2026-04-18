@@ -112,6 +112,7 @@ export default function ConsultationForm() {
     const propertyType = form.propertyType === "__other__" ? form.propertyTypeOther : form.propertyType;
     const location = form.location === "__other__" ? form.locationOther : form.location;
 
+    // Save to database
     await supabase.from("consultations").insert({
       objective,
       property_type: propertyType,
@@ -121,6 +122,25 @@ export default function ConsultationForm() {
       email: form.email,
       phone: form.phone,
     });
+
+    // Construct WhatsApp message
+    const message = `Hello, I'd like to start a 1-on-1 consultation.
+
+*Consultation Details:*
+- Name: ${form.name}
+- Email: ${form.email}
+- Phone: ${form.phone}
+- Objective: ${objective}
+- Property Type: ${propertyType}
+- Location: ${location}
+- Budget Range: ${form.budget}
+
+Please contact me to discuss further.`;
+
+    const waUrl = `https://wa.me/6285362254459?text=${encodeURIComponent(message)}`;
+    
+    // Open WA in a new tab
+    window.open(waUrl, "_blank");
 
     setSubmitting(false);
     setSubmitted(true);
