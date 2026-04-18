@@ -51,7 +51,7 @@ const categories = [
 ];
 
 function ProjectsIndex() {
-  const { t } = useApp();
+  const { t, convertPrice } = useApp();
   const [properties, setProperties] = useState<Property[]>([]);
   const [filtered, setFiltered] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
