@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/AppContext";
@@ -78,30 +78,10 @@ export default function ConsultationForm() {
   const select = (field: string, value: string) => setForm((p) => ({ ...p, [field]: value }));
 
   const steps = [
-    {
-      q: t("form.q1"),
-      options: objectives,
-      field: "objective",
-      otherField: "objectiveOther",
-    },
-    {
-      q: t("form.q2"),
-      options: propertyTypes,
-      field: "propertyType",
-      otherField: "propertyTypeOther",
-    },
-    {
-      q: t("form.q3"),
-      options: locations,
-      field: "location",
-      otherField: "locationOther",
-    },
-    {
-      q: t("form.q4"),
-      options: budgets,
-      field: "budget",
-      otherField: "",
-    },
+    { q: t("form.q1"), options: objectives, field: "objective", otherField: "objectiveOther" },
+    { q: t("form.q2"), options: propertyTypes, field: "propertyType", otherField: "propertyTypeOther" },
+    { q: t("form.q3"), options: locations, field: "location", otherField: "locationOther" },
+    { q: t("form.q4"), options: budgets, field: "budget", otherField: "" },
   ];
 
   const currentStep = steps[step];
@@ -113,7 +93,6 @@ export default function ConsultationForm() {
     const propertyType = form.propertyType === "__other__" ? form.propertyTypeOther : form.propertyType;
     const location = form.location === "__other__" ? form.locationOther : form.location;
 
-    // Save to database
     await supabase.from("consultations").insert({
       objective,
       property_type: propertyType,
@@ -124,7 +103,6 @@ export default function ConsultationForm() {
       phone: form.phone,
     });
 
-    // Construct WhatsApp message
     const message = `Hello, I'd like to start a 1-on-1 consultation.
 
 *Consultation Details:*
@@ -139,8 +117,6 @@ export default function ConsultationForm() {
 Please contact me to discuss further.`;
 
     const waUrl = `https://wa.me/6285362254459?text=${encodeURIComponent(message)}`;
-    
-    // Open WA in a new tab
     window.open(waUrl, "_blank");
 
     setSubmitting(false);
@@ -149,18 +125,16 @@ Please contact me to discuss further.`;
 
   if (submitted) {
     return (
-      <section id="consult" className="py-24 bg-foreground overflow-hidden">
+      <section id="consult" className="py-20 bg-foreground overflow-hidden">
         <div className="mx-auto max-w-2xl px-4 text-center">
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="rounded-[2.5rem] bg-background p-16 shadow-2xl"
+            className="rounded-xl bg-background p-10"
           >
-            <div className="w-20 h-20 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-8">
-              <span className="text-4xl text-gold">✓</span>
-            </div>
-            <h2 className="text-3xl font-black text-foreground mb-4">{t("form.success.h")}</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-3xl mb-3 text-gold">✓</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">{t("form.success.h")}</h2>
+            <p className="text-sm text-muted-foreground">
               {t("form.success.p")}
             </p>
           </motion.div>
@@ -170,155 +144,148 @@ Please contact me to discuss further.`;
   }
 
   return (
-    <section id="consult" className="py-24 bg-foreground overflow-hidden">
+    <section id="consult" className="py-20 bg-foreground overflow-hidden">
       <div className="mx-auto max-w-2xl px-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <p className="text-gold text-sm font-semibold tracking-[0.2em] uppercase mb-4">{t("form.tagline")}</p>
+          <p className="text-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">{t("form.tagline")}</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-background">{t("form.title")}</h2>
         </motion.div>
 
         <motion.div 
-          initial={{ opacity: 0, y: 40, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="rounded-[2.5rem] bg-background p-8 sm:p-12 shadow-2xl relative overflow-hidden"
+          className="rounded-xl bg-background p-6 sm:p-8"
         >
-          {/* Subtle Background Glow */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl -mr-16 -mt-16" />
-          
-          <div className="flex gap-1.5 mb-10 relative z-10">
+          <div className="flex gap-1 mb-8">
             {[...steps, null].map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${i <= step ? "bg-gold" : "bg-muted"}`}
+                className={`h-1 flex-1 rounded-full transition-colors ${i <= step ? "bg-gold" : "bg-muted"}`}
               />
             ))}
           </div>
 
-          {!isLast && currentStep ? (
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              <h3 className="text-xl font-black text-foreground mb-6">{currentStep.q}</h3>
-              <div className="space-y-2.5 mb-8 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
-                {currentStep.options.map((o: any) => (
-                  <button
-                    key={o.EN}
-                    onClick={() => select(currentStep.field, o.EN)}
-                    className={`w-full text-left rounded-2xl border-2 px-6 py-4 text-sm transition-all active:scale-[0.99] ${
-                      form[currentStep.field as keyof typeof form] === o.EN
-                        ? "border-gold bg-gold/5 font-bold text-foreground"
-                        : "border-transparent bg-muted/30 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-                    }`}
-                  >
-                    {o[language]}
-                  </button>
-                ))}
-                {currentStep.otherField && (
-                  <div>
+          <AnimatePresence mode="wait">
+            {!isLast && currentStep ? (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h3 className="text-base font-bold text-foreground mb-4">{currentStep.q}</h3>
+                <div className="space-y-2 mb-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+                  {currentStep.options.map((o: any) => (
                     <button
-                      onClick={() => select(currentStep.field, "__other__")}
-                      className={`w-full text-left rounded-2xl border-2 px-6 py-4 text-sm transition-all active:scale-[0.99] ${
-                        form[currentStep.field as keyof typeof form] === "__other__"
-                          ? "border-gold bg-gold/5 font-bold text-foreground"
-                          : "border-transparent bg-muted/30 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                      key={o.EN}
+                      onClick={() => select(currentStep.field, o.EN)}
+                      className={`w-full text-left rounded-lg border px-4 py-3 text-sm transition ${
+                        form[currentStep.field as keyof typeof form] === o.EN
+                          ? "border-gold bg-gold/5 font-medium text-foreground"
+                          : "border-border text-muted-foreground hover:border-gold/40"
                       }`}
                     >
-                      {t("form.other")}
+                      {o[language]}
                     </button>
-                    {form[currentStep.field as keyof typeof form] === "__other__" && (
-                      <input
-                        type="text"
-                        placeholder={t("form.other.p")}
-                        value={form[currentStep.otherField as keyof typeof form]}
-                        onChange={(e) => select(currentStep.otherField, e.target.value)}
-                        className="mt-3 w-full rounded-2xl border-2 border-border bg-background px-6 py-4 text-sm text-foreground outline-none focus:border-gold transition-colors"
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="flex justify-between items-center mt-10">
-                <button
-                  onClick={() => setStep(Math.max(0, step - 1))}
-                  disabled={step === 0}
-                  className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
-                >
-                  ← {t("form.back")}
-                </button>
-                <button
-                  onClick={() => setStep(step + 1)}
-                  disabled={!form[currentStep.field as keyof typeof form]}
-                  className="rounded-full bg-foreground px-10 py-4 text-xs font-black uppercase tracking-widest text-background transition-all hover:bg-gold hover:text-foreground active:scale-95 disabled:opacity-30 shadow-xl shadow-foreground/10"
-                >
-                  {t("form.next")} →
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <h3 className="text-xl font-black text-foreground mb-6">{t("form.details")}</h3>
-              <div className="space-y-4">
-                <div className="group">
+                  ))}
+                  {currentStep.otherField && (
+                    <div>
+                      <button
+                        onClick={() => select(currentStep.field, "__other__")}
+                        className={`w-full text-left rounded-lg border px-4 py-3 text-sm transition ${
+                          form[currentStep.field as keyof typeof form] === "__other__"
+                            ? "border-gold bg-gold/5 font-medium text-foreground"
+                            : "border-border text-muted-foreground hover:border-gold/40"
+                        }`}
+                      >
+                        {t("form.other")}
+                      </button>
+                      {form[currentStep.field as keyof typeof form] === "__other__" && (
+                        <input
+                          type="text"
+                          placeholder={t("form.other.p")}
+                          value={form[currentStep.otherField as keyof typeof form]}
+                          onChange={(e) => select(currentStep.otherField, e.target.value)}
+                          className="mt-2 w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold"
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-between mt-6">
+                  <button
+                    onClick={() => setStep(Math.max(0, step - 1))}
+                    disabled={step === 0}
+                    className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-30"
+                  >
+                    ← {t("form.back")}
+                  </button>
+                  <button
+                    onClick={() => setStep(step + 1)}
+                    disabled={!form[currentStep.field as keyof typeof form]}
+                    className="rounded-md bg-foreground px-6 py-2 text-sm font-semibold text-background transition hover:bg-foreground/90 disabled:opacity-30 active:scale-95"
+                  >
+                    {t("form.next")} →
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h3 className="text-base font-bold text-foreground mb-4">{t("form.details")}</h3>
+                <div className="space-y-3">
                   <input
                     type="text"
                     placeholder={t("form.name")}
                     value={form.name}
                     onChange={(e) => select("name", e.target.value)}
-                    className="w-full rounded-2xl border-2 border-muted/50 bg-muted/20 px-6 py-4 text-sm text-foreground outline-none focus:border-gold focus:bg-background transition-all"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold"
                   />
-                </div>
-                <div className="group">
                   <input
                     type="email"
                     placeholder={t("form.email")}
                     value={form.email}
                     onChange={(e) => select("email", e.target.value)}
-                    className="w-full rounded-2xl border-2 border-muted/50 bg-muted/20 px-6 py-4 text-sm text-foreground outline-none focus:border-gold focus:bg-background transition-all"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold"
                   />
-                </div>
-                <div className="group">
                   <input
                     type="tel"
                     placeholder={t("form.phone")}
                     value={form.phone}
                     onChange={(e) => select("phone", e.target.value)}
-                    className="w-full rounded-2xl border-2 border-muted/50 bg-muted/20 px-6 py-4 text-sm text-foreground outline-none focus:border-gold focus:bg-background transition-all"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold"
                   />
                 </div>
-              </div>
-              <div className="flex justify-between items-center mt-10">
-                <button
-                  onClick={() => setStep(step - 1)}
-                  className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  ← {t("form.back")}
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={!form.name || !form.email || !form.phone || submitting}
-                  className="rounded-full bg-gold px-12 py-4 text-xs font-black uppercase tracking-widest text-foreground transition-all hover:bg-gold-dark hover:scale-105 active:scale-95 disabled:opacity-30 shadow-2xl shadow-gold/20"
-                >
-                  {submitting ? t("form.submitting") : "Start Consultation"}
-                </button>
-              </div>
-            </motion.div>
-          )}
+                <div className="flex justify-between mt-6">
+                  <button
+                    onClick={() => setStep(step - 1)}
+                    className="text-sm text-muted-foreground hover:text-foreground"
+                  >
+                    ← {t("form.back")}
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!form.name || !form.email || !form.phone || submitting}
+                    className="rounded-md bg-gold px-8 py-2.5 text-sm font-bold text-foreground transition hover:bg-gold-dark disabled:opacity-30 active:scale-95"
+                  >
+                    {submitting ? t("form.submitting") : "Start Consultation"}
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     </section>

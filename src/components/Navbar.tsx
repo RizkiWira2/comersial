@@ -130,9 +130,9 @@ export default function Navbar() {
               href="https://wa.me/6285362254459?text=I'd like a free consultation"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-md bg-gold px-5 py-2 text-sm font-semibold text-foreground transition-all hover:bg-gold-dark hover:scale-105 active:scale-95"
+              className="inline-flex items-center justify-center rounded-md bg-gold px-5 py-2 text-sm font-semibold text-foreground transition-all hover:bg-gold-dark active:scale-95"
             >
-              FREE CONSULTATION
+              {t("nav.consult")}
             </a>
           </div>
 
@@ -213,7 +213,7 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className="mt-2 block rounded-md bg-gold px-5 py-2.5 text-center text-sm font-semibold text-foreground"
             >
-              FREE CONSULTATION
+              {t("nav.consult")}
             </a>
           </motion.div>
         )}
