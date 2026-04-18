@@ -137,24 +137,36 @@ function AdminDashboard() {
 
   const handlePropSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editingId) {
-      await supabase.from("properties").update(propForm).eq("id", editingId);
-    } else {
-      await supabase.from("properties").insert(propForm);
+    try {
+      const { error } = editingId 
+        ? await supabase.from("properties").update(propForm).eq("id", editingId)
+        : await supabase.from("properties").insert(propForm);
+      
+      if (error) throw error;
+
+      closeForm();
+      fetchData();
+    } catch (error: any) {
+      alert("Error saving property: " + error.message);
+      console.error(error);
     }
-    closeForm();
-    fetchData();
   };
 
   const handleArticleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editingId) {
-      await supabase.from("articles").update(articleForm).eq("id", editingId);
-    } else {
-      await supabase.from("articles").insert(articleForm);
+    try {
+      const { error } = editingId
+        ? await supabase.from("articles").update(articleForm).eq("id", editingId)
+        : await supabase.from("articles").insert(articleForm);
+      
+      if (error) throw error;
+
+      closeForm();
+      fetchData();
+    } catch (error: any) {
+      alert("Error saving article: " + error.message);
+      console.error(error);
     }
-    closeForm();
-    fetchData();
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -175,6 +187,7 @@ function AdminDashboard() {
         .upload(filePath, file);
 
       if (error) {
+        alert('Error uploading: ' + error.message);
         console.error('Error uploading:', error.message);
         continue;
       }
@@ -186,12 +199,13 @@ function AdminDashboard() {
       newUrls.push(publicUrl);
     }
 
-    setPropForm(prev => ({
-      ...prev,
-      images: [...(prev.images || []), ...newUrls],
-      // Set the first uploaded image as default image_url if empty
-      image_url: prev.image_url || newUrls[0]
-    }));
+    if (newUrls.length > 0) {
+      setPropForm(prev => ({
+        ...prev,
+        images: [...(prev.images || []), ...newUrls],
+        image_url: prev.image_url || newUrls[0]
+      }));
+    }
     
     setUploading(false);
   };
