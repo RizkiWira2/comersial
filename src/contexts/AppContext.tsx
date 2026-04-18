@@ -46,6 +46,7 @@ function parseUSD(s: string | number): number | null {
 const translations: Record<string, Record<Language, string>> = {
   // Navbar
   "nav.services": { EN: "Services", ID: "Layanan" },
+  "nav.projects": { EN: "Investment Projects", ID: "Proyek Investasi" },
   "nav.research": { EN: "Research & Insight", ID: "Riset & Insight" },
   "nav.about": { EN: "About Us", ID: "Tentang Kami" },
   "nav.consult": { EN: "Free Consultation", ID: "Konsultasi Gratis" },

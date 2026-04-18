@@ -29,6 +29,7 @@ export default function Navbar() {
 
   const links = [
     { label: t("nav.services"), href: "/#what-you-get", isExternal: false },
+    { label: t("nav.projects"), href: "/projects", isExternal: true },
     { label: t("nav.research"), href: "/research", isExternal: true },
     { label: t("nav.about"), href: "/#why-us", isExternal: false },
   ];

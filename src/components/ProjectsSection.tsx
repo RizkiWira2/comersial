@@ -248,6 +248,15 @@ export default function ProjectsSection() {
             </div>
           ))}
         </div>
+
+        <div className="mt-16 text-center">
+          <Link
+            to="/projects"
+            className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold px-8 py-3 text-sm font-black text-foreground transition-all hover:bg-gold hover:text-background shadow-xl hover:shadow-gold/20"
+          >
+            View All Investment Projects
+          </Link>
+        </div>
       </div>
     </section>
   );

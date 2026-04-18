@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as ResearchIndexRouteImport } from './routes/research/index'
 import { Route as ResearchIdRouteImport } from './routes/research/$id'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -25,6 +26,11 @@ const AdminRoute = AdminRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResearchIndexRoute = ResearchIndexRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/projects': typeof ProjectsIndexRoute
   '/research': typeof ResearchIndexRoute
   '/research/$id': typeof ResearchIdRoute
   '/properties/$id': typeof PropertiesIdRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
+  '/projects': typeof ProjectsIndexRoute
   '/research': typeof ResearchIndexRoute
   '/research/$id': typeof ResearchIdRoute
   '/properties/$id': typeof PropertiesIdRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/projects/': typeof ProjectsIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/research/$id': typeof ResearchIdRoute
   '/properties/$id': typeof PropertiesIdRoute
@@ -82,14 +91,15 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/login' | '/research' | '/research/$id' | '/properties/$id' | '/admin/'
+  fullPaths: '/' | '/admin' | '/admin/login' | '/projects' | '/research' | '/research/$id' | '/properties/$id' | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/login' | '/research' | '/research/$id' | '/properties/$id' | '/admin'
+  to: '/' | '/admin/login' | '/projects' | '/research' | '/research/$id' | '/properties/$id' | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/admin/login'
+    | '/projects/'
     | '/research/'
     | '/research/$id'
     | '/properties/$id'
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ResearchIdRoute: typeof ResearchIdRoute
   PropertiesIdRoute: typeof PropertiesIdRoute
@@ -118,6 +129,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/research/': {
@@ -173,6 +191,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  ProjectsIndexRoute: ProjectsIndexRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ResearchIdRoute: ResearchIdRoute,
   PropertiesIdRoute: PropertiesIdRoute,
