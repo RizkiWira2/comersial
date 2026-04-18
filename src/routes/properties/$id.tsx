@@ -270,15 +270,15 @@ function PropertyDetail() {
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="w-1 h-6 bg-gold rounded-full" />
-                <h2 className="text-xl font-black text-foreground uppercase tracking-widest">{t("proj.financial")}</h2>
+                <h2 className="text-xl font-black text-foreground uppercase tracking-widest">Financial Projections</h2>
               </div>
               
               <div className="bg-card border border-border rounded-[32px] overflow-hidden shadow-xl">
                 <div className="divide-y divide-border">
-                  <MetricRow label={t("proj.price")} value={convertPrice(property.price)} />
+                  <MetricRow label="Price" value={convertPrice(property.price)} />
                   {property.market_value && (
                     <MetricRow 
-                      label={t("proj.market")} 
+                      label="Market Value (Resale)" 
                       value={convertPrice(property.market_value)} 
                       subValue={`(${property.profit_pct || "100%"})`} 
                     />
@@ -291,8 +291,8 @@ function PropertyDetail() {
                       highlight
                     />
                   )}
-                  <MetricRow label={t("proj.roi")} value={`${property.roi || "12.5%"} Yearly`} />
-                  <MetricRow label={t("proj.growth")} value={`${property.capital_growth || "8.5%"} Yearly`} />
+                  <MetricRow label="ROI Est." value={`${property.roi || "12.5%"} Yearly`} />
+                  <MetricRow label="Capital Growth Est." value={`${property.capital_growth || "8.5%"} Yearly`} />
                 </div>
               </div>
             </div>
