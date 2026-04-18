@@ -153,6 +153,14 @@ export default function ProjectsSection() {
               key={p.id}
               className="group relative flex flex-col h-full glass-card rounded-[32px] border border-border/40 hover:border-gold/40 bg-card/40 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-2xl"
             >
+              {/* Entire Card Clickable Overlay */}
+              <Link
+                to="/properties/$id"
+                params={{ id: p.id }}
+                className="absolute inset-0 z-10 cursor-pointer"
+                aria-label={`View details for ${p.title}`}
+              />
+
               {/* Image Area */}
               <div className="aspect-[16/10] overflow-hidden relative">
                 <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
@@ -237,14 +245,25 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2.5 mt-auto">
-                  <Link
-                    to="/properties/$id"
-                    params={{ id: p.id }}
-                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3 text-[10px] font-black text-background transition-all hover:bg-gold hover:text-foreground active:scale-95"
-                  >
-                    <FileText size={12} /> {t("proj.research")}
-                  </Link>
+                <div className="flex gap-2.5 mt-auto relative z-20">
+                  {p.pdf_url ? (
+                    <a
+                      href={p.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3 text-[10px] font-black text-background transition-all hover:bg-gold hover:text-foreground active:scale-95"
+                    >
+                      <FileText size={12} /> {t("proj.research")}
+                    </a>
+                  ) : (
+                    <Link
+                      to="/properties/$id"
+                      params={{ id: p.id }}
+                      className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3 text-[10px] font-black text-background transition-all hover:bg-gold hover:text-foreground active:scale-95"
+                    >
+                      <FileText size={12} /> {t("proj.research")}
+                    </Link>
+                  )}
                   <a
                     href={`https://wa.me/6285362254459?text=I'm interested in ${p.title}`}
                     target="_blank"

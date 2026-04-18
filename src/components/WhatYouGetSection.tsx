@@ -202,7 +202,9 @@ export default function WhatYouGetSection() {
                 ))}
               </div>
               <a
-                href="#consult"
+                href={`https://wa.me/6285362254459?text=I'd like to inquire about ${cat.title} services`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center justify-center w-full rounded-md bg-gold/10 border border-gold/20 px-4 py-2.5 text-xs font-semibold text-gold transition-colors hover:bg-gold hover:text-foreground"
               >
                 {t("wyg.contact")}

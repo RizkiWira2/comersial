@@ -36,6 +36,7 @@ const emptyProperty: PropertyInsert = {
   area: "",
   image_url: "",
   images: [],
+  pdf_url: "",
   is_published: true,
 };
 
@@ -362,6 +363,9 @@ function AdminDashboard() {
                 <Field label="ROI Est." value={propForm.roi || ""} onChange={(v) => setPropField("roi", v)} />
                 <Field label="Beds" value={String(propForm.beds ?? 0)} onChange={(v) => setPropField("beds", Number(v))} type="number" />
                 <Field label="Baths" value={String(propForm.baths ?? 0)} onChange={(v) => setPropField("baths", Number(v))} type="number" />
+                <div className="sm:col-span-2">
+                  <Field label="Investment Research PDF URL" value={propForm.pdf_url || ""} onChange={(v) => setPropField("pdf_url", v)} placeholder="https://example.com/research.pdf" />
+                </div>
                 
                 {/* Image Upload Section */}
                 <div className="sm:col-span-2 space-y-3">

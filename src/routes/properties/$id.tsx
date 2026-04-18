@@ -277,9 +277,20 @@ function PropertyDetail() {
                     <p className="text-sm font-bold text-foreground">Open for Private Registration</p>
                   </div>
                   
-                  <button className="w-full flex items-center justify-center gap-3 bg-foreground text-background font-bold py-4 rounded-2xl hover:bg-foreground/90 transition-all active:scale-[0.98] shadow-lg shadow-foreground/10 uppercase text-xs tracking-widest">
-                    <FileText size={18} /> Request ROI Details
-                  </button>
+                  {property.pdf_url ? (
+                    <a
+                      href={property.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-3 bg-foreground text-background font-bold py-4 rounded-2xl hover:bg-foreground/90 transition-all active:scale-[0.98] shadow-lg shadow-foreground/10 uppercase text-xs tracking-widest"
+                    >
+                      <FileText size={18} /> View ROI Details (PDF)
+                    </a>
+                  ) : (
+                    <button className="w-full flex items-center justify-center gap-3 bg-foreground text-background font-bold py-4 rounded-2xl hover:bg-foreground/90 transition-all active:scale-[0.98] shadow-lg shadow-foreground/10 uppercase text-xs tracking-widest">
+                      <FileText size={18} /> Request ROI Details
+                    </button>
+                  )}
                   
                   <a 
                     href={`https://wa.me/6285362254459?text=I'm interested in ${property.title}`}
