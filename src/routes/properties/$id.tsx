@@ -333,11 +333,11 @@ function PropertyDetail() {
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-3 bg-foreground text-background font-bold py-4 rounded-2xl hover:bg-foreground/90 transition-all active:scale-[0.98] shadow-lg shadow-foreground/10 uppercase text-xs tracking-widest"
                     >
-                      <FileText size={18} /> View ROI Details (PDF)
+                      <FileText size={18} /> Investment Research
                     </a>
                   ) : (
                     <button className="w-full flex items-center justify-center gap-3 bg-foreground text-background font-bold py-4 rounded-2xl hover:bg-foreground/90 transition-all active:scale-[0.98] shadow-lg shadow-foreground/10 uppercase text-xs tracking-widest">
-                      <FileText size={18} /> Request ROI Details
+                      <FileText size={18} /> Investment Research
                     </button>
                   )}
                   
@@ -346,7 +346,7 @@ function PropertyDetail() {
                     target="_blank"
                     className="w-full flex items-center justify-center gap-3 bg-white/5 border border-border text-foreground font-bold py-4 rounded-2xl hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all uppercase text-xs tracking-widest"
                   >
-                    <img src={whatsappIcon} alt="WhatsApp" className="w-5 h-5" /> WhatsApp Agent
+                    <img src={whatsappIcon} alt="WhatsApp" className="w-5 h-5" /> WhatsApp Us
                   </a>
                 </div>
 
