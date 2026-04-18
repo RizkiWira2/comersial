@@ -242,9 +242,13 @@ function ProjectsIndex() {
                             </span>
                           </div>
                         )}
-                        <div className="flex justify-between items-center py-0.5">
+                        <div className="flex justify-between items-center py-0.5 border-b border-border/5">
                           <span className="text-muted-foreground">{t("proj.roi")}</span>
                           <span className="font-bold text-foreground">{item.roi || "12.5%"} Yearly</span>
+                        </div>
+                        <div className="flex justify-between items-center py-0.5">
+                          <span className="text-muted-foreground">{t("proj.growth")}</span>
+                          <span className="font-bold text-foreground">{item.capital_growth || "8.5%"} Yearly</span>
                         </div>
                       </div>
 

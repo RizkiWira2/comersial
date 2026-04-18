@@ -218,9 +218,13 @@ export default function ProjectsSection() {
                       </span>
                     </div>
                   )}
-                  <div className="flex justify-between items-center py-0.5">
+                  <div className="flex justify-between items-center py-0.5 border-b border-border/5">
                     <span className="text-muted-foreground">{t("proj.roi")}</span>
                     <span className="font-bold text-foreground">{p.roi || "12.5%"} Yearly</span>
+                  </div>
+                  <div className="flex justify-between items-center py-0.5">
+                    <span className="text-muted-foreground">{t("proj.growth")}</span>
+                    <span className="font-bold text-foreground">{p.capital_growth || "8.5%"} Yearly</span>
                   </div>
                 </div>
 
