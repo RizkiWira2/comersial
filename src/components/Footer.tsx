@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import logoFull from "@/assets/logo-full.svg";
 import { useApp } from "@/contexts/AppContext";
 import { 
@@ -49,16 +50,25 @@ export default function Footer() {
           </div>
           
           <div>
-            <p className="text-sm font-bold text-background uppercase tracking-[0.2em] mb-6">{t("footer.links")}</p>
+            <p className="text-sm font-bold text-background uppercase tracking-[0.2em] mb-6">Company</p>
             <div className="space-y-4">
-              {[t("nav.about"), t("proj.title"), t("nav.services"), t("nav.research")].map((l) => (
-                <span
-                  key={l}
-                  className="block text-sm text-background/40 hover:text-gold transition-colors cursor-pointer"
-                >
-                  {l}
-                </span>
-              ))}
+              <Link to="/" className="block text-sm text-background/40 hover:text-gold transition-colors">
+                Home
+              </Link>
+              <Link to="/projects" className="block text-sm text-background/40 hover:text-gold transition-colors">
+                Investment Projects
+              </Link>
+              <a 
+                href="https://wa.me/6285362254459?text=I'm interested in 1-on-1 Investment Services"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-sm text-background/40 hover:text-gold transition-colors"
+              >
+                1-on-1 Investment Services
+              </a>
+              <Link to="/research" className="block text-sm text-background/40 hover:text-gold transition-colors">
+                Research & Insight
+              </Link>
             </div>
           </div>
 
@@ -73,7 +83,9 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="text-gold shrink-0" size={18} />
-                <p className="text-sm text-background/50">info@commercial.id</p>
+                <a href="mailto:raza@comersial.com" className="text-sm text-background/50 hover:text-gold transition-colors">
+                  raza@comersial.com
+                </a>
               </div>
             </div>
           </div>
