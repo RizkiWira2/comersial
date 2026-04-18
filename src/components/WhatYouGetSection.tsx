@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useApp } from "@/contexts/AppContext";
 import {
   Search,
@@ -10,7 +9,6 @@ import {
   Gavel,
   UserCheck,
   HeadphonesIcon,
-  ChevronDown,
 } from "lucide-react";
 
 interface ServiceCategory {
@@ -78,7 +76,7 @@ const columnIcons: React.ElementType[][] = [
   [Gavel, UserCheck, HeadphonesIcon],
 ];
 
-function AccordionItem({
+function ServiceItem({
   heading,
   pills,
   Icon,
@@ -87,46 +85,26 @@ function AccordionItem({
   pills: string[];
   Icon: React.ElementType;
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div className="border-b border-border/50 last:border-b-0">
-      <button
-        onClick={() => setOpen(!open)}
-        className="group flex w-full items-center gap-3 py-4 text-left transition-colors"
-      >
-        <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 transition-colors group-hover:border-gold group-hover:bg-gold/10">
-          <Icon size={16} className="text-gold" strokeWidth={1.5} />
+    <div className="py-6 border-b border-border/30 last:border-b-0 space-y-4">
+      <div className="flex items-center gap-3">
+        <div className="flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-xl bg-gold/10 border border-gold/20">
+          <Icon size={18} className="text-gold" strokeWidth={1.5} />
         </div>
-        <h4 className="flex-1 text-sm font-bold text-foreground transition-colors group-hover:text-gold">
+        <h4 className="text-base font-black text-foreground tracking-tight">
           {heading}
         </h4>
-        <ChevronDown
-          size={18}
-          className={`flex-shrink-0 transition-all duration-300 ${
-            open ? "rotate-180 text-gold" : "text-muted-foreground"
-          }`}
-          strokeWidth={2}
-        />
-      </button>
+      </div>
 
-      {/* CSS Grid interpolation for smooth height animation */}
-      <div
-        className="grid transition-[grid-template-rows] duration-300 ease-out"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-      >
-        <div className="overflow-hidden">
-          <div className="flex flex-wrap gap-2 pb-4 pt-1">
-            {pills.map((pill) => (
-              <span
-                key={pill}
-                className="inline-flex items-center rounded-full border border-gold/20 bg-gold/5 px-3 py-1.5 text-xs font-medium text-foreground/80"
-              >
-                {pill}
-              </span>
-            ))}
-          </div>
-        </div>
+      <div className="flex flex-wrap gap-2 pr-4">
+        {pills.map((pill) => (
+          <span
+            key={pill}
+            className="inline-flex items-center rounded-full border border-border/50 bg-surface/50 px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest"
+          >
+            {pill}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -215,7 +193,7 @@ export default function WhatYouGetSection() {
               </h3>
               <div>
                 {cat.items.map((item, ii) => (
-                  <AccordionItem
+                  <ServiceItem
                     key={ii}
                     heading={item.heading}
                     pills={item.pills}
