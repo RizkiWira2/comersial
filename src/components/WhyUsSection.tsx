@@ -1,107 +1,66 @@
-import { Check, X } from "lucide-react";
+import { motion } from "framer-motion";
 import { useApp } from "@/contexts/AppContext";
-import villaInterior from "@/assets/villa-interior.jpg";
-import logoFull from "@/assets/logo-full.svg";
-
+import { CheckCircle2 } from "lucide-react";
 
 export default function WhyUsSection() {
   const { t } = useApp();
 
   const comparisons = [
-    {
-      feature: t("why.comp.h1"),
-      desc: t("why.comp.d1"),
-      us: true,
-      them: false,
-    },
-    {
-      feature: t("why.comp.h2"),
-      desc: t("why.comp.d2"),
-      us: true,
-      them: false,
-    },
-    {
-      feature: t("why.comp.h3"),
-      desc: t("why.comp.d3"),
-      us: true,
-      them: false,
-    },
-    {
-      feature: t("why.comp.h4"),
-      desc: t("why.comp.d4"),
-      us: true,
-      them: false,
-    },
-    {
-      feature: t("why.comp.h5"),
-      desc: t("why.comp.d5"),
-      us: true,
-      them: false,
-    },
+    { label: t("why.comp.h1"), agent: false, commercial: true, desc: t("why.comp.d1") },
+    { label: t("why.comp.h2"), agent: false, commercial: true, desc: t("why.comp.d2") },
+    { label: t("why.comp.h3"), agent: false, commercial: true, desc: t("why.comp.d3") },
+    { label: t("why.comp.h4"), agent: false, commercial: true, desc: t("why.comp.d4") },
+    { label: t("why.comp.h5"), agent: true, commercial: true, desc: t("why.comp.d5") },
   ];
 
   return (
-    <section id="why-us" className="py-20 bg-background">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="grid md:grid-cols-[1fr_320px] gap-12 items-start">
-          <div>
-            <div className="mb-8">
-              <p className="text-gradient-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">{t("why.tagline")}</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("why.title")}</h2>
-            </div>
+    <section id="why-us" className="py-24 bg-foreground overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <p className="text-gold text-sm font-semibold tracking-[0.2em] uppercase mb-4">{t("why.tagline")}</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-background">{t("why.title")}</h2>
+        </motion.div>
 
-            <div className="rounded-xl border border-border overflow-hidden">
-              <div className="grid grid-cols-[1fr_80px_80px] sm:grid-cols-[1fr_120px_120px] bg-foreground text-background">
-                <div className="px-4 py-3 text-sm font-semibold" />
-                <div className="px-4 py-3 flex items-center justify-center">
-                  <img src={logoFull} alt="Commercial Logo" className="h-4 w-auto brightness-0 invert" />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1 }}
+          className="overflow-hidden rounded-[3rem] border border-white/10 bg-white/5 backdrop-blur-md"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-[1fr,200px,200px] border-b border-white/10 pb-6 pt-10 px-6 sm:px-12 bg-white/5">
+            <div className="text-sm font-bold text-background/40 uppercase tracking-widest hidden md:block">Feature Comparison</div>
+            <div className="text-lg font-bold text-background/60 text-center uppercase tracking-widest">Property Agent</div>
+            <div className="text-lg font-bold text-gold text-center uppercase tracking-widest">Commercial</div>
+          </div>
+
+          <div className="divide-y divide-white/5">
+            {comparisons.map((item, i) => (
+              <div key={i} className="grid grid-cols-1 md:grid-cols-[1fr,200px,200px] p-6 sm:p-12 items-center hover:bg-white/5 transition-colors group">
+                <div className="mb-4 md:mb-0">
+                  <h3 className="text-xl font-bold text-background mb-2 group-hover:text-gold transition-colors">{item.label}</h3>
+                  <p className="text-background/50 text-sm max-w-xl">{item.desc}</p>
                 </div>
-                <div className="px-4 py-3 text-center text-sm font-medium text-background/60">{t("why.comp.agent")}</div>
+                <div className="flex justify-center border-t border-white/5 pt-4 md:border-0 md:pt-0">
+                  {item.agent ? (
+                    <CheckCircle2 className="text-background/20" size={28} />
+                  ) : (
+                    <div className="text-background/10 font-black text-2xl">✕</div>
+                  )}
+                </div>
+                <div className="flex justify-center border-t border-white/5 pt-4 md:border-0 md:pt-0 bg-gold/5 md:bg-transparent">
+                  <CheckCircle2 className="text-gold" size={32} />
+                </div>
               </div>
-
-              {comparisons.map((c, i) => (
-                <div
-                  key={i}
-                  className="grid grid-cols-[1fr_80px_80px] sm:grid-cols-[1fr_120px_120px] border-t border-border"
-                >
-                  <div className="px-4 py-4">
-                    <p className="text-sm font-semibold text-foreground">{c.feature}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{c.desc}</p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gold/15">
-                      <Check size={16} className="text-gold-dark" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-muted">
-                      <X size={16} className="text-muted-foreground" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
-
-          <div className="hidden md:block sticky top-24 space-y-4">
-            <div className="rounded-xl overflow-hidden">
-              <img
-                src={villaInterior}
-                alt="Luxury villa interior in Bali"
-                loading="lazy"
-                width={800}
-                height={600}
-                className="w-full h-64 object-cover"
-              />
-            </div>
-            <div className="rounded-xl bg-card border border-border p-5">
-              <p className="text-xs text-gold font-semibold tracking-widest uppercase mb-2">Our Promise</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t("hero.quote")}
-              </p>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

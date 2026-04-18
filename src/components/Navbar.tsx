@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
@@ -35,7 +36,12 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
+    <motion.nav 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center">
@@ -80,7 +86,7 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Currency Selector - Sleek Dropdown */}
+            {/* Currency Selector */}
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setCurrencyOpen(!currencyOpen)}
@@ -91,35 +97,42 @@ export default function Navbar() {
                 <ChevronDown size={12} className={`transition-transform duration-300 ${currencyOpen ? "rotate-180" : ""}`} />
               </button>
 
-              {currencyOpen && (
-                <div className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-border bg-background shadow-2xl animate-scale-up z-[60]">
-                  {currencies.map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => {
-                        setCurrency(c);
-                        setCurrencyOpen(false);
-                      }}
-                      className={`w-full px-4 py-2 text-left text-[10px] font-bold transition-colors ${
-                        currency === c
-                          ? "bg-gold text-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      }`}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <AnimatePresence>
+                {currencyOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-border bg-background shadow-2xl z-[60]"
+                  >
+                    {currencies.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => {
+                          setCurrency(c);
+                          setCurrencyOpen(false);
+                        }}
+                        className={`w-full px-4 py-2 text-left text-[10px] font-bold transition-colors ${
+                          currency === c
+                            ? "bg-gold text-foreground"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <a
               href="https://wa.me/6285362254459?text=I'd like a free consultation"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-md bg-gold px-5 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-gold-dark"
+              className="inline-flex items-center justify-center rounded-md bg-gold px-5 py-2 text-sm font-semibold text-foreground transition-all hover:bg-gold-dark hover:scale-105 active:scale-95"
             >
-              {t("nav.consult")}
+              FREE CONSULTATION
             </a>
           </div>
 
@@ -129,75 +142,82 @@ export default function Navbar() {
         </div>
       </div>
 
-      {open && (
-        <div className="md:hidden border-t border-border bg-background px-4 pb-4">
-          {links.map((l) => 
-            l.isExternal ? (
-              <Link
-                key={l.href}
-                to={l.href}
-                onClick={() => setOpen(false)}
-                className="block py-3 text-sm font-medium text-muted-foreground hover:text-gold"
-              >
-                {l.label}
-              </Link>
-            ) : (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="block py-3 text-sm font-medium text-muted-foreground hover:text-gold"
-              >
-                {l.label}
-              </a>
-            )
-          )}
-
-          {/* Mobile Language & Currency */}
-          <div className="flex items-center gap-3 py-3">
-            <div className="flex items-center rounded-full border border-border overflow-hidden">
-              {languages.map((l) => (
-                <button
-                  key={l.code}
-                  onClick={() => setLanguage(l.code)}
-                  className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    language === l.code
-                      ? "bg-gold text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+      <AnimatePresence>
+        {open && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-border bg-background px-4 pb-4 overflow-hidden"
+          >
+            {links.map((l) => 
+              l.isExternal ? (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block py-3 text-sm font-medium text-muted-foreground hover:text-gold"
                 >
                   {l.label}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center rounded-full border border-border overflow-hidden">
-              {currencies.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCurrency(c)}
-                  className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    currency === c
-                      ? "bg-gold text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block py-3 text-sm font-medium text-muted-foreground hover:text-gold"
                 >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </div>
+                  {l.label}
+                </a>
+              )
+            )}
 
-          <a
-            href="https://wa.me/6285362254459?text=I'd like a free consultation"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
-            className="mt-2 block rounded-md bg-gold px-5 py-2.5 text-center text-sm font-semibold text-foreground"
-          >
-            {t("nav.consult")}
-          </a>
-        </div>
-      )}
-    </nav>
+            {/* Mobile Language & Currency */}
+            <div className="flex items-center gap-3 py-3">
+              <div className="flex items-center rounded-full border border-border overflow-hidden">
+                {languages.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => setLanguage(l.code)}
+                    className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      language === l.code
+                        ? "bg-gold text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {l.label}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center rounded-full border border-border overflow-hidden">
+                {currencies.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCurrency(c)}
+                    className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      currency === c
+                        ? "bg-gold text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <a
+              href="https://wa.me/6285362254459?text=I'd like a free consultation"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="mt-2 block rounded-md bg-gold px-5 py-2.5 text-center text-sm font-semibold text-foreground"
+            >
+              FREE CONSULTATION
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }

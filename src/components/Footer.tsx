@@ -1,6 +1,5 @@
+import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import logoFull from "@/assets/logo-full.svg";
-import { useApp } from "@/contexts/AppContext";
 import { 
   Instagram, 
   Linkedin, 
@@ -11,6 +10,8 @@ import {
 } from "lucide-react";
 import tiktokIcon from "@/assets/tik-tok.svg";
 import whatsappIcon from "@/assets/whatsapp.svg";
+import logoFull from "@/assets/logo-full.svg";
+import { useApp } from "@/contexts/AppContext";
 
 export default function Footer() {
   const { t } = useApp();
@@ -25,8 +26,14 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-foreground py-16">
-      <div className="mx-auto max-w-7xl px-4">
+    <footer className="bg-foreground py-16 overflow-hidden">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="mx-auto max-w-7xl px-4"
+      >
         <div className="grid gap-12 sm:grid-cols-3">
           <div className="space-y-6">
             <img src={logoFull} alt="Commercial Logo" className="h-8 w-auto brightness-0 invert" />
@@ -37,7 +44,7 @@ export default function Footer() {
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
-                  href={social.label === "WhatsApp" ? "https://wa.me/6281234567890" : "#"}
+                  href={social.label === "WhatsApp" ? "https://wa.me/6285362254459" : "#"}
                   target={social.label === "WhatsApp" ? "_blank" : undefined}
                   rel={social.label === "WhatsApp" ? "noopener noreferrer" : undefined}
                   className="w-10 h-10 rounded-full border border-background/10 flex items-center justify-center text-background/50 hover:text-gold hover:border-gold transition-all duration-300"
@@ -94,7 +101,7 @@ export default function Footer() {
         <div className="mt-16 border-t border-background/5 pt-8 text-center text-[10px] text-background/20 uppercase tracking-[0.3em]">
           © {new Date().getFullYear()} Comersial Group. {t("footer.rights")}
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 }
