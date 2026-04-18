@@ -34,6 +34,8 @@ const emptyProperty: PropertyInsert = {
   beds: 0,
   baths: 0,
   area: "",
+  land_size: "",
+  building_size: "",
   image_url: "",
   images: [],
   pdf_url: "",
@@ -375,8 +377,15 @@ function AdminDashboard() {
                 <Field label="Market Value" value={propForm.market_value || ""} onChange={(v) => setPropField("market_value", v)} />
                 <Field label="Profit %" value={propForm.profit_pct || ""} onChange={(v) => setPropField("profit_pct", v)} />
                 <Field label="ROI Est." value={propForm.roi || ""} onChange={(v) => setPropField("roi", v)} />
-                <Field label="Beds" value={String(propForm.beds ?? 0)} onChange={(v) => setPropField("beds", Number(v))} type="number" />
-                <Field label="Baths" value={String(propForm.baths ?? 0)} onChange={(v) => setPropField("baths", Number(v))} type="number" />
+                <Field label="Exit Projection (5Y)" value={propForm.exit_projection || ""} onChange={(v) => setPropField("exit_projection", v)} />
+                <Field label="Exit Profit (%)" value={propForm.exit_pct || ""} onChange={(v) => setPropField("exit_pct", v)} />
+                <Field label="Capital Growth (%)" value={propForm.capital_growth || ""} onChange={(v) => setPropField("capital_growth", v)} />
+                <div className="grid grid-cols-2 gap-2">
+                  <Field label="Beds" value={String(propForm.beds ?? 0)} onChange={(v) => setPropField("beds", Number(v))} type="number" />
+                  <Field label="Baths" value={String(propForm.baths ?? 0)} onChange={(v) => setPropField("baths", Number(v))} type="number" />
+                </div>
+                <Field label="Land Size" value={propForm.land_size || ""} onChange={(v) => setPropField("land_size", v)} placeholder="500 m²" />
+                <Field label="Building Size" value={propForm.building_size || ""} onChange={(v) => setPropField("building_size", v)} placeholder="350 m²" />
                 <div className="sm:col-span-2">
                   <Field label="Investment Research PDF URL" value={propForm.pdf_url || ""} onChange={(v) => setPropField("pdf_url", v)} placeholder="https://example.com/research.pdf" />
                 </div>
