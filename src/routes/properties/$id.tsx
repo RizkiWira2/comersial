@@ -6,7 +6,7 @@ import {
   ArrowLeft, Calendar, Shield, TrendingUp, DollarSign, 
   ChevronRight, Share2, Heart, Info, Waves, Wifi, Wind, 
   Car, Utensils, TreePine, Eye, Dumbbell, Sofa,
-  ChevronLeft
+  ChevronLeft, Building2, ShieldCheck
 } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -209,24 +209,24 @@ function PropertyDetail() {
             {/* Features Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-3xl bg-card border border-border shadow-sm">
               <div className="flex flex-col items-center justify-center p-4 border-r border-border last:border-0 sm:border-r">
-                <Bed className="text-gold mb-2" size={20} />
-                <span className="text-lg font-bold text-foreground">{property.beds || "0"}</span>
-                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Bedrooms</span>
-              </div>
-              <div className="flex flex-col items-center justify-center p-4 border-r border-border last:border-0 sm:border-r">
-                <Bath className="text-gold mb-2" size={20} />
-                <span className="text-lg font-bold text-foreground">{property.baths || "0"}</span>
-                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Bathrooms</span>
-              </div>
-              <div className="flex flex-col items-center justify-center p-4 border-r border-border last:border-0 sm:border-r">
                 <Maximize className="text-gold mb-2" size={20} />
-                <span className="text-lg font-bold text-foreground truncate max-w-full">{property.area || "0 m²"}</span>
-                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Living Area</span>
+                <span className="text-lg font-bold text-foreground truncate max-w-full">{property.land_size || "-"}</span>
+                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Land Size</span>
+              </div>
+              <div className="flex flex-col items-center justify-center p-4 border-r border-border last:border-0 sm:border-r">
+                <Building2 className="text-gold mb-2" size={20} />
+                <span className="text-lg font-bold text-foreground truncate max-w-full">{property.building_size || "-"}</span>
+                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Building Size</span>
+              </div>
+              <div className="flex flex-col items-center justify-center p-4 border-r border-border last:border-0 sm:border-r">
+                <Sofa className="text-gold mb-2" size={20} />
+                <span className="text-lg font-bold text-foreground">{property.total_rooms || "0"}</span>
+                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Total Rooms</span>
               </div>
               <div className="flex flex-col items-center justify-center p-4 last:border-0">
-                <Shield className="text-gold mb-2" size={20} />
-                <span className="text-lg font-bold text-foreground">Safe</span>
-                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Zoning</span>
+                <ShieldCheck className="text-gold mb-2" size={20} />
+                <span className="text-lg font-bold text-foreground truncate max-w-full">{property.condition || "Excellent"}</span>
+                <span className="text-[10px] uppercase text-muted-foreground font-semibold">Condition</span>
               </div>
             </div>
 

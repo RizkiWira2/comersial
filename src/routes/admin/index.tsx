@@ -36,11 +36,21 @@ const emptyProperty: PropertyInsert = {
   area: "",
   land_size: "",
   building_size: "",
+  total_rooms: 0,
+  condition: "Excellent",
   image_url: "",
   images: [],
   pdf_url: "",
   is_published: true,
 };
+
+const conditionOptions = [
+  "Brand New",
+  "Excellent",
+  "Good",
+  "Well Maintained",
+  "Needs Renovation",
+];
 
 const emptyArticle: ArticleInsert = {
   title: "",
@@ -383,6 +393,19 @@ function AdminDashboard() {
                 <div className="grid grid-cols-2 gap-2">
                   <Field label="Beds" value={String(propForm.beds ?? 0)} onChange={(v) => setPropField("beds", Number(v))} type="number" />
                   <Field label="Baths" value={String(propForm.baths ?? 0)} onChange={(v) => setPropField("baths", Number(v))} type="number" />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Field label="Total Rooms" value={String(propForm.total_rooms ?? 0)} onChange={(v) => setPropField("total_rooms", Number(v))} type="number" />
+                  <div>
+                    <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Condition</label>
+                    <select
+                      value={propForm.condition || "Excellent"}
+                      onChange={(e) => setPropField("condition", e.target.value)}
+                      className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-gold"
+                    >
+                      {conditionOptions.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                    </select>
+                  </div>
                 </div>
                 <Field label="Land Size" value={propForm.land_size || ""} onChange={(v) => setPropField("land_size", v)} placeholder="500 m²" />
                 <Field label="Building Size" value={propForm.building_size || ""} onChange={(v) => setPropField("building_size", v)} placeholder="350 m²" />
