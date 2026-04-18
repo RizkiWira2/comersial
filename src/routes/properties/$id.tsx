@@ -321,7 +321,7 @@ function PropertyDetail() {
               <div className="glass-card rounded-3xl border border-border bg-card/60 p-8 shadow-xl backdrop-blur-xl animate-scale-up">
                 <div className="mb-6">
                   <p className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] mb-1">Starting From</p>
-                  <h2 className="text-2xl font-bold font-serif text-foreground">{convertPrice(property.price)}</h2>
+                  <h2 className="text-3xl font-black text-foreground tracking-tighter">{convertPrice(property.price)}</h2>
                   <div className="flex items-center gap-2 mt-2 group cursor-pointer">
                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground group-hover:bg-gold group-hover:text-gold-dark transition-colors">?</div>
                     <span className="text-xs text-muted-foreground">About pricing in USD/IDR</span>
