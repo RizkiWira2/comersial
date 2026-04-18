@@ -15,7 +15,7 @@ export default function Footer() {
   const { t } = useApp();
   
   const socialLinks = [
-    { icon: <img src={whatsappIcon} alt="WhatsApp" className="w-[18px] h-[18px]" />, label: "WhatsApp" },
+    { icon: <img src={whatsappIcon} alt="WhatsApp" className="w-[18px] h-[18px] brightness-0 invert" />, label: "WhatsApp" },
     { icon: <Instagram size={18} />, label: "Instagram" },
     { icon: <Linkedin size={18} />, label: "LinkedIn" },
     { icon: <Music2 size={18} />, label: "TikTok" },
