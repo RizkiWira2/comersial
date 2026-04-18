@@ -32,7 +32,9 @@ export default function HeroSection() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="#consult"
+            href="https://wa.me/6285362254459?text=I'd like to start a consultation"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full sm:w-auto inline-flex items-center justify-center rounded-md bg-gold px-8 py-3 text-sm font-bold text-foreground transition hover:bg-gold-dark"
           >
             {t("hero.consult")}
