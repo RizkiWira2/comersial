@@ -137,11 +137,18 @@ function ArticleDetail() {
 
             {/* Main Content */}
             <div className="prose prose-invert prose-gold max-w-none">
-              <div className="text-muted-foreground leading-[1.8] text-lg space-y-8">
+              <div className="text-muted-foreground leading-[1.8] text-lg space-y-2 whitespace-pre-wrap font-sans">
                 {article.content ? (
-                  article.content.split('\n\n').map((paragraph, idx) => (
-                    <p key={idx}>{paragraph}</p>
-                  ))
+                  article.content.split('\n').map((line, idx) => {
+                    if (line.startsWith('###')) {
+                      return (
+                        <h3 key={idx} className="text-foreground text-2xl font-black mt-12 mb-6 tracking-tight">
+                          {line.replace('###', '').trim()}
+                        </h3>
+                      );
+                    }
+                    return <p key={idx}>{line}</p>;
+                  })
                 ) : (
                   <p>No content available for this article.</p>
                 )}
