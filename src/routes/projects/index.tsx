@@ -204,73 +204,73 @@ function ProjectsIndex() {
                     </div>
 
                     {/* Content Area */}
-                    <div className="p-8 flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 text-muted-foreground text-xs mb-3">
-                        <MapPin size={14} className="text-gold" />
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex items-center gap-2 text-muted-foreground text-[10px] mb-2 uppercase tracking-widest">
+                        <MapPin size={12} className="text-gold" />
                         {item.location}
                       </div>
 
-                      <h3 className="text-2xl font-black text-foreground mb-2 leading-tight tracking-tight">
+                      <h3 className="text-xl font-black text-foreground mb-1 leading-tight tracking-tight line-clamp-1">
                         {item.title}
                       </h3>
 
-                      <div className="mb-6">
-                        <span className="inline-block rounded-full bg-gold/10 px-3 py-1 text-[10px] font-bold text-gold uppercase tracking-widest border border-gold/20">
+                      <div className="mb-4">
+                        <span className="inline-block rounded-full bg-gold/5 px-2 py-0.5 text-[9px] font-bold text-gold uppercase tracking-widest border border-gold/10">
                           {item.tenure || "Freehold"}
                         </span>
                       </div>
                       
                       {/* Detailed Investment Metrics */}
-                      <div className="space-y-3 mb-8 text-sm">
-                        <div className="flex justify-between items-center py-1 border-b border-border/10">
+                      <div className="space-y-1.5 mb-5 text-[11px]">
+                        <div className="flex justify-between items-center py-0.5 border-b border-border/5">
                           <span className="text-muted-foreground">{t("proj.price")}</span>
                           <span className="font-bold text-foreground">{convertPrice(item.price)}</span>
                         </div>
                         {item.market_value && (
-                          <div className="flex justify-between items-center py-1 border-b border-border/10">
+                          <div className="flex justify-between items-center py-0.5 border-b border-border/5">
                             <span className="text-muted-foreground">{t("proj.market")}</span>
                             <span className="font-bold text-foreground">
-                              {convertPrice(item.market_value)} <span className="text-gold text-xs ml-1">({item.profit_pct || "100%"})</span>
+                              {convertPrice(item.market_value)} <span className="text-gold text-[9px] ml-1">({item.profit_pct || "100%"})</span>
                             </span>
                           </div>
                         )}
                         {item.exit_projection && (
-                          <div className="flex justify-between items-center py-1 border-b border-border/10">
+                          <div className="flex justify-between items-center py-0.5 border-b border-border/5">
                             <span className="text-muted-foreground">{t("proj.exit")}</span>
                             <span className="font-bold text-gold">
-                              {convertPrice(item.exit_projection)} <span className="text-xs ml-1 opacity-70">({item.exit_pct})</span>
+                              {convertPrice(item.exit_projection)} <span className="text-[9px] ml-1 opacity-70">({item.exit_pct})</span>
                             </span>
                           </div>
                         )}
-                        <div className="flex justify-between items-center py-1">
+                        <div className="flex justify-between items-center py-0.5">
                           <span className="text-muted-foreground">{t("proj.roi")}</span>
                           <span className="font-bold text-foreground">{item.roi || "12.5%"} Yearly</span>
                         </div>
                       </div>
 
                       {/* Specs */}
-                      <div className="flex items-center gap-6 text-muted-foreground text-xs mb-8 pt-6 border-t border-border/30">
-                        <span className="flex items-center gap-2 font-bold"><Bed size={15} className="text-gold" /> {item.beds || 3}</span>
-                        <span className="flex items-center gap-2 font-bold"><Bath size={15} className="text-gold" /> {item.baths || 3}</span>
-                        <span className="flex items-center gap-2 font-bold"><Maximize size={15} className="text-gold" /> {item.area || "350 m²"}</span>
+                      <div className="flex items-center gap-4 text-muted-foreground text-[10px] mb-5 pt-4 border-t border-border/10">
+                        <span className="flex items-center gap-1.5 font-bold"><Bed size={13} className="text-gold" /> {item.beds || 3}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><Bath size={13} className="text-gold" /> {item.baths || 3}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><Maximize size={13} className="text-gold" /> {item.area || "350 m²"}</span>
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="flex gap-3 mt-auto pt-2">
+                      <div className="flex gap-2.5 mt-auto">
                         <Link
                           to="/properties/$id"
                           params={{ id: item.id }}
-                          className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-foreground px-4 py-3.5 text-xs font-black text-background transition-all hover:bg-gold hover:text-foreground shadow-lg active:scale-95"
+                          className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3 text-[10px] font-black text-background transition-all hover:bg-gold hover:text-foreground active:scale-95"
                         >
-                          <FileText size={14} /> {t("proj.research")}
+                          <FileText size={12} /> {t("proj.research")}
                         </Link>
                         <a
                           href="https://wa.me/6281234567890"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center rounded-2xl border border-border/50 bg-surface/50 px-4 py-3.5 text-foreground transition-all hover:border-gold hover:bg-gold/5 active:scale-95"
+                          className="inline-flex items-center justify-center rounded-xl border border-border/30 bg-surface/30 px-4 py-3 text-foreground transition-all hover:border-gold hover:bg-gold/5 active:scale-95"
                         >
-                          <MessageCircle size={18} />
+                          <MessageCircle size={15} />
                         </a>
                       </div>
                     </div>
