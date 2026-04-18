@@ -267,14 +267,14 @@ function PropertyDetail() {
             </div>
 
             {/* Financial Projections Section */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-1 h-6 bg-gold rounded-full" />
-                <h2 className="text-xl font-black text-foreground uppercase tracking-widest">Financial Projections</h2>
+                <div className="w-1 h-5 bg-gold rounded-full" />
+                <h2 className="text-base font-black text-foreground uppercase tracking-widest">Financial Projections</h2>
               </div>
               
-              <div className="bg-card border border-border rounded-[32px] overflow-hidden shadow-xl">
-                <div className="divide-y divide-border">
+              <div className="bg-card border border-border rounded-[24px] overflow-hidden shadow-lg border-opacity-50">
+                <div className="divide-y divide-border/50">
                   <MetricRow label="Price" value={convertPrice(property.price)} />
                   {property.market_value && (
                     <MetricRow 
@@ -299,14 +299,14 @@ function PropertyDetail() {
 
             {/* Other Details Section */}
             {property.other_details && property.other_details.length > 0 && (
-              <div className="space-y-6 pt-4">
+              <div className="space-y-4 pt-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-1 h-6 bg-gold rounded-full" />
-                  <h2 className="text-xl font-black text-foreground uppercase tracking-widest">Other Details</h2>
+                  <div className="w-1 h-5 bg-gold rounded-full" />
+                  <h2 className="text-base font-black text-foreground uppercase tracking-widest">Other Details</h2>
                 </div>
                 
-                <div className="bg-card border border-border rounded-[32px] overflow-hidden shadow-xl">
-                  <div className="divide-y divide-border">
+                <div className="bg-card border border-border rounded-[24px] overflow-hidden shadow-lg border-opacity-50">
+                  <div className="divide-y divide-border/50">
                     {property.other_details.map((detail: any, idx: number) => (
                       <MetricRow 
                         key={idx} 
@@ -387,12 +387,12 @@ export default PropertyDetail;
 
 function MetricRow({ label, value, subValue, highlight }: { label: string; value: string; subValue?: string; highlight?: boolean }) {
   return (
-    <div className={`flex justify-between items-center p-6 group transition-colors ${highlight ? 'bg-gold/5' : 'hover:bg-muted/30'}`}>
-      <span className={`text-sm font-bold uppercase tracking-widest ${highlight ? 'text-gold' : 'text-muted-foreground'}`}>{label}</span>
+    <div className={`flex justify-between items-center p-4 sm:p-5 group transition-colors ${highlight ? 'bg-gold/5' : 'hover:bg-muted/30'}`}>
+      <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest ${highlight ? 'text-gold' : 'text-muted-foreground'}`}>{label}</span>
       <div className="text-right">
-        <span className={`text-lg font-black ${highlight ? 'text-gold' : 'text-foreground'}`}>{value}</span>
+        <span className={`text-base sm:text-lg font-black ${highlight ? 'text-gold' : 'text-foreground'}`}>{value}</span>
         {subValue && (
-          <span className={`text-xs ml-2 font-bold ${highlight ? 'text-gold-dark' : 'text-gold'}`}>{subValue}</span>
+          <span className={`text-[10px] ml-2 font-bold ${highlight ? 'text-gold-dark' : 'text-gold'}`}>{subValue}</span>
         )}
       </div>
     </div>
